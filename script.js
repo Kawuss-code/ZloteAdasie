@@ -1,6 +1,5 @@
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded",()=>{
 
-// === DANE NOMINOWANYCH ===
 const nomineesData = {
   nauczyciel:["Pani Kowalska","Pan Nowak","Pani Wiśniewska"],
   wycieczka:["Wycieczka do zoo","Wycieczka do kina","Wycieczka w góry"],
@@ -20,8 +19,8 @@ const nomineesData = {
 };
 
 const categories = Object.keys(nomineesData);
-let currentStep=0;
-const votes={};
+let currentStep = 0;
+const votes = {};
 
 // === TABY ===
 window.showTab = function(tabId){
@@ -68,10 +67,12 @@ function checkVoteBlock(){
   }
   return false;
 }
-window.checkVoteBlock = checkVoteBlock;
 
 // === GŁOSOWANIE ===
-window.startVoting = function(){
+const startBtn = document.getElementById("startVotingBtn");
+const step0Next = document.getElementById("step0Next");
+
+startBtn.addEventListener("click", ()=>{
   if(checkVoteBlock()) return;
   currentStep=0;
   votes.fullname="";
@@ -80,49 +81,52 @@ window.startVoting = function(){
   document.getElementById("step0").style.display="block";
   document.getElementById("stepContainer").innerHTML="";
   document.getElementById("vote-finish").style.display="none";
-}
+});
 
-window.nextStep = function(){
-  let name=document.getElementById("fullname").value.trim();
-  if(!name){alert("Podaj imię i nazwisko!"); return;}
-  votes.fullname=name;
+step0Next.addEventListener("click", ()=>{
+  let name = document.getElementById("fullname").value.trim();
+  if(!name){ alert("Podaj imię i nazwisko!"); return;}
+  votes.fullname = name;
   document.getElementById("step0").style.display="none";
   showCategoryStep();
-}
+});
 
 function showCategoryStep(){
-  let container=document.getElementById("stepContainer");
+  const container = document.getElementById("stepContainer");
   container.innerHTML="";
-  if(currentStep>=categories.length){
-    const finish=document.getElementById("vote-finish");
+  if(currentStep >= categories.length){
+    const finish = document.getElementById("vote-finish");
     finish.style.display="block";
     finish.innerHTML="<h3>🎉 Gratulacje! Zakończyłeś głosowanie!</h3>";
     submitVote();
     return;
   }
-  let cat=categories[currentStep];
-  let h3=document.createElement("h3");
-  h3.innerText=cat;
+
+  const cat = categories[currentStep];
+  const h3 = document.createElement("h3");
+  h3.innerText = cat;
   container.appendChild(h3);
 
-  let optionsDiv=document.createElement("div");
-  optionsDiv.className="vote-options";
+  const optionsDiv = document.createElement("div");
+  optionsDiv.className = "vote-options";
+
   nomineesData[cat].forEach(n=>{
-    let btn=document.createElement("button");
-    btn.innerText=n;
-    btn.onclick=()=>{
-      votes[cat]=n;
+    const btn = document.createElement("button");
+    btn.innerText = n;
+    btn.onclick = ()=>{
+      votes[cat] = n;
       currentStep++;
       showCategoryStep();
     };
     optionsDiv.appendChild(btn);
   });
+
   container.appendChild(optionsDiv);
 
   if(currentStep>0){
-    let backBtn=document.createElement("button");
-    backBtn.innerText="⬅ Wróć";
-    backBtn.onclick=()=>{
+    const backBtn = document.createElement("button");
+    backBtn.innerText = "⬅ Wróć";
+    backBtn.onclick = ()=>{
       currentStep--;
       showCategoryStep();
     };
@@ -130,12 +134,11 @@ function showCategoryStep(){
   }
 }
 
-// === WYSLANIE DO GOOGLE SHEETS ===
+// === SUBMIT DO GOOGLE SHEETS ===
 function submitVote(){
   const formData = new FormData();
-  Object.keys(votes).forEach(k => formData.append(k,votes[k]));
+  Object.keys(votes).forEach(k=>formData.append(k,votes[k]));
 
-  // TU WKLEJ SWOJ URL Z APPS SCRIPT
   fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec",{
     method:"POST",
     body: formData

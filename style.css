@@ -6,28 +6,18 @@ body {
     margin:0; padding:0;
 }
 
-header {
-    padding:20px;
-    border-bottom:2px solid #d4af37;
-}
+header {padding:20px; border-bottom:2px solid #d4af37;}
 
-nav button{
-    background:black;
-    color:#d4af37;
-    border:1px solid #d4af37;
-    padding:10px;
-    margin:5px;
-    cursor:pointer;
+nav button {
+    background:black; color:#d4af37;
+    border:1px solid #d4af37; padding:10px; margin:5px; cursor:pointer;
 }
-nav button:hover{
-    background:#d4af37;
-    color:black;
-}
+nav button:hover { background:#d4af37; color:black; }
 
-.tab{display:none;}
-.tab.active{display:block;}
+.tab { display:none; }
+.tab.active { display:block; }
 
-.vote-options{
+.vote-options {
     display:flex;
     flex-wrap:wrap;
     justify-content:center;
@@ -35,22 +25,20 @@ nav button:hover{
     margin-top:20px;
 }
 
-.vote-options button{
+.vote-options button {
     padding:10px 15px;
+    cursor:pointer;
 }
 
-.vote-options button.selected{
+.vote-options button.selected {
     background:#d4af37;
     color:black;
 }
 
-input{
+input {
     padding:8px;
     width:60%;
     margin:auto;
     margin-top:10px;
 }
-
-#step0, #stepContainer{
-    margin-top:20px;
-}
+#step0, #stepContainer { margin-top:20px; }
