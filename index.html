@@ -9,61 +9,48 @@
 <body>
 
 <header>
-    <h1>🏆 Złote Adasie</h1>
-    <nav>
-        <button onclick="showTab('home')">Strona główna</button>
-        <button onclick="showTab('nominees')">Nominowani</button>
-        <button onclick="showTab('vote')">Głosowanie</button>
-    </nav>
+<h1>🏆 Złote Adasie</h1>
+<nav>
+<button onclick="showTab('home')">Strona główna</button>
+<button onclick="showTab('nominees')">Nominowani</button>
+<button onclick="showTab('vote')">Głosowanie</button>
+</nav>
 </header>
 
 <main>
-    <!-- HOME -->
-    <section id="home" class="tab active">
-        <h2>Witaj na Złotych Adasiach</h2>
-        <p>Oddaj głos w swoich ulubionych kategoriach.</p>
-    </section>
+<section id="home" class="tab active">
+<h2>Witaj na Złotych Adasiach</h2>
+<p>Oddaj głos w swoich ulubionych kategoriach.</p>
+</section>
 
-    <!-- NOMINOWANI -->
-    <section id="nominees" class="tab">
-        <h2>Nominowani</h2>
-        <div id="nomineeCategories" class="category-list">
-            <!-- Kategorie generowane w JS -->
-        </div>
+<section id="nominees" class="tab">
+<h2>Nominowani</h2>
+<div id="nomineeCategories"></div>
+<div id="nomineeResults" style="display:none;">
+<h3 id="nomineeCategoryTitle"></h3>
+<ul id="nomineeList"></ul>
+<button onclick="backToNomineeCategories()">⬅ Wróć</button>
+</div>
+</section>
 
-        <div id="nomineeResults" class="hidden">
-            <h3 id="nomineeCategoryTitle"></h3>
-            <ul id="nomineeList" class="nominees"></ul>
-            <button onclick="backToNomineeCategories()">⬅ Wróć</button>
-        </div>
-    </section>
+<section id="vote" class="tab">
+<h2>Głosowanie</h2>
+<div id="voteStart">
+<button onclick="startVoting()">🗳️ Głosuj</button>
+</div>
 
-    <!-- GŁOSOWANIE -->
-    <section id="vote" class="tab">
-        <h2>Głosowanie</h2>
+<div id="voteForm" style="display:none;">
+<div id="step0">
+<h3>Imię i nazwisko</h3>
+<input type="text" id="fullname" placeholder="Imię i nazwisko">
+<button onclick="nextStep()">➡️ Dalej</button>
+</div>
 
-        <div id="voteStart">
-            <button onclick="startVoting()">🗳️ Głosuj</button>
-        </div>
-
-        <div id="voteForm" class="hidden">
-            <!-- Krok 0: imię i nazwisko -->
-            <div class="step active" id="step0">
-                <h3>Imię i nazwisko</h3>
-                <input type="text" id="fullname" placeholder="Imię i nazwisko">
-                <button type="button" onclick="nextStep()">➡️ Dalej</button>
-            </div>
-
-            <div id="stepContainer"></div>
-
-            <div id="vote-finish" class="hidden"></div>
-        </div>
-    </section>
+<div id="stepContainer"></div>
+<div id="vote-finish" style="display:none;"></div>
+</div>
+</section>
 </main>
-
-<footer>
-    <p>© 2026 Złote Adasie</p>
-</footer>
 
 <script src="script.js"></script>
 </body>
