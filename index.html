@@ -696,31 +696,31 @@ async function submitVote() {
     }
     
     try {
-        // Wyślij jako application/x-www-form-urlencoded
-        const params = new URLSearchParams();
-        params.append('fullname', voteData.fullname || '');
-        params.append('nauczyciel', voteData.nauczyciel || '');
-        params.append('wycieczka', voteData.wycieczka || '');
-        params.append('przypal', voteData.przypal || '');
-        params.append('przewodniczacy', voteData.przewodniczacy || '');
-        params.append('nieobecnosci', voteData.nieobecnosci || '');
-        params.append('duo', voteData.duo || '');
-        params.append('glow_up', voteData.glow_up || '');
-        params.append('wypowiedz', voteData.wypowiedz || '');
-        params.append('osiagniecia', voteData.osiagniecia || '');
-        params.append('sciagajacy', voteData.sciagajacy || '');
-        params.append('osobowosc', voteData.osobowosc || '');
-        params.append('aura', voteData.aura || '');
-        params.append('parkowanie', voteData.parkowanie || '');
-        params.append('sportowiec', voteData.sportowiec || '');
-        params.append('inteligent', voteData.inteligent || '');
+        console.log('Wysyłane dane:', voteData);
+        
+        // Użyj FormData zamiast URLSearchParams
+        const formData = new FormData();
+        formData.append('fullname', voteData.fullname || '');
+        formData.append('nauczyciel', voteData.nauczyciel || '');
+        formData.append('wycieczka', voteData.wycieczka || '');
+        formData.append('przypal', voteData.przypal || '');
+        formData.append('przewodniczacy', voteData.przewodniczacy || '');
+        formData.append('nieobecnosci', voteData.nieobecnosci || '');
+        formData.append('duo', voteData.duo || '');
+        formData.append('glow_up', voteData.glow_up || '');
+        formData.append('wypowiedz', voteData.wypowiedz || '');
+        formData.append('osiagniecia', voteData.osiagniecia || '');
+        formData.append('sciagajacy', voteData.sciagajacy || '');
+        formData.append('osobowosc', voteData.osobowosc || '');
+        formData.append('aura', voteData.aura || '');
+        formData.append('parkowanie', voteData.parkowanie || '');
+        formData.append('sportowiec', voteData.sportowiec || '');
+        formData.append('inteligent', voteData.inteligent || '');
         
         const response = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec", {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: params.toString()
+            body: formData,
+            redirect: 'follow'
         });
         
         const result = await response.text();
