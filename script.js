@@ -106,3 +106,4 @@ document.getElementById("voteForm").addEventListener("submit", async function(e)
     }
 });
 
+
