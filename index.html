@@ -650,6 +650,8 @@ function selectNominee(category, nominee, buttonElement) {
     
     // Zapisz wybór
     voteData[category] = nominee;
+    console.log('Zapisano:', category, '=', nominee);
+    console.log('Wszystkie dane:', voteData);
     
     // Odblokuj przycisk "Dalej"
     const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
@@ -698,28 +700,28 @@ async function submitVote() {
     try {
         console.log('Wysyłane dane:', voteData);
         
-        // Użyj FormData zamiast URLSearchParams
-        const formData = new FormData();
-        formData.append('fullname', voteData.fullname || '');
-        formData.append('nauczyciel', voteData.nauczyciel || '');
-        formData.append('wycieczka', voteData.wycieczka || '');
-        formData.append('przypal', voteData.przypal || '');
-        formData.append('przewodniczacy', voteData.przewodniczacy || '');
-        formData.append('nieobecnosci', voteData.nieobecnosci || '');
-        formData.append('duo', voteData.duo || '');
-        formData.append('glow_up', voteData.glow_up || '');
-        formData.append('wypowiedz', voteData.wypowiedz || '');
-        formData.append('osiagniecia', voteData.osiagniecia || '');
-        formData.append('sciagajacy', voteData.sciagajacy || '');
-        formData.append('osobowosc', voteData.osobowosc || '');
-        formData.append('aura', voteData.aura || '');
-        formData.append('parkowanie', voteData.parkowanie || '');
-        formData.append('sportowiec', voteData.sportowiec || '');
-        formData.append('inteligent', voteData.inteligent || '');
+        const url = "https://script.google.com/macros/s/AKfycbwN2RIYhAQ-xkbDOPZAIJSirCggYrGDbrbDcOD_x_KDZuaJnZPJUy55viWaR7G7PGZw/exec" + 
+            new URLSearchParams({
+                fullname: voteData.fullname || '',
+                nauczyciel: voteData.nauczyciel || '',
+                wycieczka: voteData.wycieczka || '',
+                przypal: voteData.przypal || '',
+                przewodniczacy: voteData.przewodniczacy || '',
+                nieobecnosci: voteData.nieobecnosci || '',
+                duo: voteData.duo || '',
+                glow_up: voteData.glow_up || '',
+                wypowiedz: voteData.wypowiedz || '',
+                osiagniecia: voteData.osiagniecia || '',
+                sciagajacy: voteData.sciagajacy || '',
+                osobowosc: voteData.osobowosc || '',
+                aura: voteData.aura || '',
+                parkowanie: voteData.parkowanie || '',
+                sportowiec: voteData.sportowiec || '',
+                inteligent: voteData.inteligent || ''
+            }).toString();
         
-        const response = await fetch("https://script.google.com/macros/s/AKfycbyqqergFGTMGqJJ6Rcz18DUqoWaWEsBEusYQ0curs0z-jTTiE50yjKmheJyUGxvkFLi/exec", {
-            method: 'POST',
-            body: formData,
+        const response = await fetch(url, {
+            method: 'GET',
             redirect: 'follow'
         });
         
