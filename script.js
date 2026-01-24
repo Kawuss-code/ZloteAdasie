@@ -1,9 +1,22 @@
-// Czekamy aż DOM będzie gotowy
 window.addEventListener("DOMContentLoaded", () => {
 
+// === DANE NOMINOWANYCH ===
 const nomineesData = {
   nauczyciel:["Pani Kowalska","Pan Nowak","Pani Wiśniewska"],
-  wycieczka:["Wycieczka do zoo","Wycieczka do kina","Wycieczka w góry"]
+  wycieczka:["Wycieczka do zoo","Wycieczka do kina","Wycieczka w góry"],
+  przypal:["Janek","Kasia","Marek"],
+  przewodniczacy:["Anna","Tomek","Piotr"],
+  nieobecnosci:["Ola","Kacper","Bartek"],
+  duo:["Marta & Ania","Jan & Tomek","Kasia & Ola"],
+  glow_up:["Monika","Paweł","Natalia"],
+  wypowiedz:["Adam","Klaudia","Łukasz"],
+  osiagniecia:["Asia","Marcin","Ewa"],
+  sciagajacy:["Filip","Daria","Michał"],
+  osobowosc:["Karolina","Damian","Patryk"],
+  aura:["Laura","Kamil","Natalia"],
+  parkowanie:["Piotr","Szymon","Mateusz"],
+  sportowiec:["Oliwia","Robert","Julia"],
+  inteligent:["Michał","Anna","Kacper"]
 };
 
 const categories = Object.keys(nomineesData);
@@ -43,8 +56,23 @@ window.backToNomineeCategories = function(){
   document.getElementById("nomineeResults").style.display="none";
 }
 
+// === BLOKADA 1 GŁOS ===
+function checkVoteBlock(){
+  if(localStorage.getItem("zlote_adasie_voted")){
+    document.getElementById("voteStart").style.display="none";
+    document.getElementById("voteForm").style.display="none";
+    const finish = document.getElementById("vote-finish");
+    finish.style.display="block";
+    finish.innerHTML='<h3>❌ Już oddałeś głos</h3><p>Można głosować tylko raz.</p>';
+    return true;
+  }
+  return false;
+}
+window.checkVoteBlock = checkVoteBlock;
+
 // === GŁOSOWANIE ===
 window.startVoting = function(){
+  if(checkVoteBlock()) return;
   currentStep=0;
   votes.fullname="";
   document.getElementById("voteStart").style.display="none";
@@ -66,7 +94,7 @@ function showCategoryStep(){
   let container=document.getElementById("stepContainer");
   container.innerHTML="";
   if(currentStep>=categories.length){
-    let finish=document.getElementById("vote-finish");
+    const finish=document.getElementById("vote-finish");
     finish.style.display="block";
     finish.innerHTML="<h3>🎉 Gratulacje! Zakończyłeś głosowanie!</h3>";
     submitVote();
@@ -102,10 +130,25 @@ function showCategoryStep(){
   }
 }
 
-// funkcja do wysyłania głosu
+// === WYSLANIE DO GOOGLE SHEETS ===
 function submitVote(){
-  console.log("Głos wysłany:",votes);
-  // Tutaj możesz wstawić fetch do Google Sheets
+  const formData = new FormData();
+  Object.keys(votes).forEach(k => formData.append(k,votes[k]));
+
+  // TU WKLEJ SWOJ URL Z APPS SCRIPT
+  fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec",{
+    method:"POST",
+    body: formData
+  }).then(res=>{
+    if(res.ok){
+      localStorage.setItem("zlote_adasie_voted","true");
+    }else{
+      alert("Błąd przy zapisie głosu");
+    }
+  }).catch(err=>{
+    alert("Błąd połączenia z serwerem");
+    console.error(err);
+  });
 }
 
 });
