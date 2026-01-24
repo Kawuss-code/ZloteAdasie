@@ -7,8 +7,9 @@ main { max-width:900px; margin:40px auto; text-align:center; }
 .tab{display:none;}
 .tab.active{display:block;}
 .hidden{display:none;}
-.step { display:none; flex-direction:column; gap:10px; }
+.step { display:flex; flex-direction:column; gap:10px; } /* Usuń display:none */
 .step.active { display:flex; }
+#stepContainer > div { display:flex; flex-direction:column; gap:10px; } /* dynamiczne kroki */
 button { background:black; color:#d4af37; border:1px solid #d4af37; padding:10px; cursor:pointer; }
 button:hover { background:#d4af37; color:black; }
 .category-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top:20px; }

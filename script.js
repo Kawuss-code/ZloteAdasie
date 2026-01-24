@@ -96,8 +96,10 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   function showCategoryStep(){
-      const container = document.getElementById("stepContainer");
-      container.innerHTML = "";
+    const container = document.getElementById("stepContainer");
+    container.innerHTML = "";
+    container.classList.add("active"); // dodaj, żeby był widoczny
+
 
       if(currentStep >= categories.length){
           const finish = document.getElementById("vote-finish");
