@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Złote Adasie</title>
+    <title>Złote Adasie 2026</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,76 +11,72 @@
 <header>
     <h1>🏆 Złote Adasie</h1>
     <nav>
-        <button onclick="showTab('home')">Strona główna</button>
-        <button onclick="showTab('nominees')">Nominowani</button>
-        <button onclick="showTab('vote')">Głosowanie</button>
+        <button onclick="switchTab('home')">Strona główna</button>
+        <button onclick="switchTab('nominees')">Nominowani</button>
+        <button onclick="switchTab('vote')">Głosowanie</button>
     </nav>
 </header>
 
 <main>
-    <!-- HOME -->
-    <section id="home" class="tab active">
+    <!-- STRONA GŁÓWNA -->
+    <section id="home" class="tab-content active">
         <h2>Witaj na Złotych Adasiach</h2>
-        <p>Oddaj głos w swoich ulubionych kategoriach.</p>
+        <p>Oddaj głos w swoich ulubionych kategoriach i wybierz najlepszych!</p>
+        <div class="info-box">
+            <p>📌 Możesz głosować tylko raz</p>
+            <p>🏆 15 kategorii do wyboru</p>
+            <p>✅ Twój głos jest anonimowy</p>
+        </div>
     </section>
 
     <!-- NOMINOWANI -->
-    <section id="nominees" class="tab">
+    <section id="nominees" class="tab-content">
         <h2>Nominowani</h2>
-
-        <div id="nomineeCategories" class="category-list">
-            <button onclick="showNominees('nauczyciel')">🧑‍🏫 Nauczyciel</button>
-            <button onclick="showNominees('wycieczka')">🚌 Wycieczka</button>
-            <button onclick="showNominees('przypal')">🔥 Przypał</button>
-            <button onclick="showNominees('przewodniczacy')">👑 Przewodniczący</button>
-            <button onclick="showNominees('nieobecnosci')">🚫 Nieobecności</button>
-            <button onclick="showNominees('duo')">👯 Duo</button>
-            <button onclick="showNominees('glow_up')">💄 Glow Up</button>
-            <button onclick="showNominees('wypowiedz')">🗣️ Wypowiedź</button>
-            <button onclick="showNominees('osiagniecia')">🏆 Osiągnięcia</button>
-            <button onclick="showNominees('sciagajacy')">📄 Ściągający</button>
-            <button onclick="showNominees('osobowosc')">😎 Osobowość</button>
-            <button onclick="showNominees('aura')">✨ Aura</button>
-            <button onclick="showNominees('parkowanie')">🅿️ Parkowanie</button>
-            <button onclick="showNominees('sportowiec')">🏅 Sportowiec</button>
-            <button onclick="showNominees('inteligent')">🧠 Inteligent</button>
+        <div id="category-buttons" class="category-grid">
+            <!-- Generowane przez JS -->
         </div>
-
-        <div id="nomineeResults" class="hidden">
-            <h3 id="nomineeCategoryTitle"></h3>
-            <ul id="nomineeList" class="nominees"></ul>
-            <button onclick="backToNomineeCategories()">⬅ Wróć</button>
+        <div id="nominee-list" class="nominee-display" style="display:none;">
+            <h3 id="category-title"></h3>
+            <ul id="nominees"></ul>
+            <button onclick="backToCategories()">⬅️ Wróć do kategorii</button>
         </div>
     </section>
 
     <!-- GŁOSOWANIE -->
-    <section id="vote" class="tab">
+    <section id="vote" class="tab-content">
         <h2>Głosowanie</h2>
-
-        <div id="voteStart">
-            <button onclick="startVoting()">🗳️ Głosuj</button>
+        
+        <div id="vote-blocked" style="display:none;">
+            <div class="message-box error">
+                <h3>❌ Już oddałeś głos</h3>
+                <p>Można głosować tylko raz. Dziękujemy za udział!</p>
+            </div>
         </div>
 
-        <form id="voteForm" class="hidden">
-            <!-- Krok 0: imię i nazwisko -->
-            <div class="step" id="step0">
-                <h3>Imię i nazwisko</h3>
-                <input type="text" name="fullname" placeholder="Imię i nazwisko" required>
-                <button type="button" onclick="nextStep()">➡️ Dalej</button>
-            </div>
+        <div id="vote-start">
+            <p>Kliknij przycisk poniżej, aby rozpocząć głosowanie</p>
+            <button onclick="startVote()" class="big-button">🗳️ Rozpocznij głosowanie</button>
+        </div>
 
-            <div id="stepContainer"></div>
+        <div id="vote-form" style="display:none;">
+            <form id="voting-form">
+                <div id="vote-steps">
+                    <!-- Generowane przez JS -->
+                </div>
+            </form>
+        </div>
 
-            <div id="vote-finish" class="hidden">
-                <h3>✅ Dzięki za oddanie głosu!</h3>
-                <p>Twój głos został zapisany.</p>
+        <div id="vote-success" style="display:none;">
+            <div class="message-box success">
+                <h3>✅ Głos oddany!</h3>
+                <p>Dziękujemy za udział w głosowaniu Złote Adasie 2026!</p>
             </div>
-        </form>
+        </div>
     </section>
 </main>
 
 <footer>
-    <p>© 2026 Złote Adasie</p>
+    <p>© 2026 Złote Adasie | Twój głos się liczy!</p>
 </footer>
 
 <script src="script.js"></script>

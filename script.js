@@ -1,151 +1,279 @@
-// === TABY ===
-function showTab(tabId){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    if(tabId==='vote') checkVoteBlock();
-}
+// ======================
+// DANE APLIKACJI
+// ======================
 
-// === NOMINOWANI ===
-const nomineesData = {
-    nauczyciel:["Pani Kowalska","Pan Nowak","Pani Wiśniewska"],
-    wycieczka:["Wycieczka do zoo","Wycieczka do kina","Wycieczka w góry"],
-    przypal:["Janek","Kasia","Marek"],
-    przewodniczacy:["Anna","Tomek","Piotr"],
-    nieobecnosci:["Ola","Kacper","Bartek"],
-    duo:["Marta & Ania","Jan & Tomek","Kasia & Ola"],
-    glow_up:["Monika","Paweł","Natalia"],
-    wypowiedz:["Adam","Klaudia","Łukasz"],
-    osiagniecia:["Asia","Marcin","Ewa"],
-    sciagajacy:["Filip","Daria","Michał"],
-    osobowosc:["Karolina","Damian","Patryk"],
-    aura:["Laura","Kamil","Natalia"],
-    parkowanie:["Piotr","Szymon","Mateusz"],
-    sportowiec:["Oliwia","Robert","Julia"],
-    inteligent:["Michał","Anna","Kacper"]
+const NOMINEES = {
+    nauczyciel: ["Pani Kowalska", "Pan Nowak", "Pani Wiśniewska"],
+    wycieczka: ["Wycieczka do zoo", "Wycieczka do kina", "Wycieczka w góry"],
+    przypal: ["Janek", "Kasia", "Marek"],
+    przewodniczacy: ["Anna", "Tomek", "Piotr"],
+    nieobecnosci: ["Ola", "Kacper", "Bartek"],
+    duo: ["Marta & Ania", "Jan & Tomek", "Kasia & Ola"],
+    glow_up: ["Monika", "Paweł", "Natalia"],
+    wypowiedz: ["Adam", "Klaudia", "Łukasz"],
+    osiagniecia: ["Asia", "Marcin", "Ewa"],
+    sciagajacy: ["Filip", "Daria", "Michał"],
+    osobowosc: ["Karolina", "Damian", "Patryk"],
+    aura: ["Laura", "Kamil", "Natalia"],
+    parkowanie: ["Piotr", "Szymon", "Mateusz"],
+    sportowiec: ["Oliwia", "Robert", "Julia"],
+    inteligent: ["Michał", "Anna", "Kacper"]
 };
 
-function showNominees(category){
-    document.getElementById("nomineeCategories").style.display = "none";
-    document.getElementById("nomineeResults").classList.remove("hidden");
-    document.getElementById("nomineeCategoryTitle").innerText = category;
-    const list = document.getElementById("nomineeList");
-    list.innerHTML = "";
-    nomineesData[category].forEach(n=>{
-        const li=document.createElement("li");
-        li.innerText = n;
+const CATEGORY_ICONS = {
+    nauczyciel: "🧑‍🏫",
+    wycieczka: "🚌",
+    przypal: "🔥",
+    przewodniczacy: "👑",
+    nieobecnosci: "🚫",
+    duo: "👯",
+    glow_up: "💄",
+    wypowiedz: "🗣️",
+    osiagniecia: "🏆",
+    sciagajacy: "📄",
+    osobowosc: "😎",
+    aura: "✨",
+    parkowanie: "🅿️",
+    sportowiec: "🏅",
+    inteligent: "🧠"
+};
+
+const CATEGORY_NAMES = {
+    nauczyciel: "Nauczyciel",
+    wycieczka: "Wycieczka",
+    przypal: "Przypał",
+    przewodniczacy: "Przewodniczący",
+    nieobecnosci: "Nieobecności",
+    duo: "Duo",
+    glow_up: "Glow Up",
+    wypowiedz: "Wypowiedź",
+    osiagniecia: "Osiągnięcia",
+    sciagajacy: "Ściągający",
+    osobowosc: "Osobowość",
+    aura: "Aura",
+    parkowanie: "Parkowanie",
+    sportowiec: "Sportowiec",
+    inteligent: "Inteligent"
+};
+
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec";
+
+let currentVoteStep = 0;
+let voteData = {};
+
+// ======================
+// ZAKŁADKI
+// ======================
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.getElementById(tabName).classList.add('active');
+    
+    if (tabName === 'vote') {
+        checkIfAlreadyVoted();
+    }
+}
+
+// ======================
+// NOMINOWANI
+// ======================
+
+function initNominees() {
+    const container = document.getElementById('category-buttons');
+    container.innerHTML = '';
+    
+    Object.keys(NOMINEES).forEach(category => {
+        const button = document.createElement('button');
+        button.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
+        button.onclick = () => showNominees(category);
+        container.appendChild(button);
+    });
+}
+
+function showNominees(category) {
+    document.getElementById('category-buttons').style.display = 'none';
+    document.getElementById('nominee-list').style.display = 'block';
+    
+    const title = document.getElementById('category-title');
+    title.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
+    
+    const list = document.getElementById('nominees');
+    list.innerHTML = '';
+    
+    NOMINEES[category].forEach(nominee => {
+        const li = document.createElement('li');
+        li.textContent = nominee;
         list.appendChild(li);
     });
 }
 
-function backToNomineeCategories(){
-    document.getElementById("nomineeCategories").style.display = "flex";
-    document.getElementById("nomineeResults").classList.add("hidden");
+function backToCategories() {
+    document.getElementById('category-buttons').style.display = 'grid';
+    document.getElementById('nominee-list').style.display = 'none';
 }
 
-// === BLOKADA 1 GŁOS ===
-function checkVoteBlock(){
-    if(localStorage.getItem("zlote_adasie_voted")){
-        document.getElementById("voteStart").classList.add("hidden");
-        document.getElementById("voteForm").classList.add("hidden");
-        document.getElementById("vote-finish").classList.remove("hidden");
-        document.getElementById("vote-finish").innerHTML='<h3>❌ Już oddałeś głos</h3><p>Można głosować tylko raz.</p>';
-        return true;
+// ======================
+// GŁOSOWANIE
+// ======================
+
+function checkIfAlreadyVoted() {
+    if (localStorage.getItem('zlote_adasie_voted')) {
+        document.getElementById('vote-start').style.display = 'none';
+        document.getElementById('vote-form').style.display = 'none';
+        document.getElementById('vote-blocked').style.display = 'block';
+        document.getElementById('vote-success').style.display = 'none';
+    } else {
+        document.getElementById('vote-start').style.display = 'block';
+        document.getElementById('vote-form').style.display = 'none';
+        document.getElementById('vote-blocked').style.display = 'none';
+        document.getElementById('vote-success').style.display = 'none';
     }
-    return false;
 }
 
-// === WIZARD GŁOSOWANIA ===
-const categories = ["nauczyciel","wycieczka","przypal","przewodniczacy","nieobecnosci","duo",
-"glow_up","wypowiedz","osiagniecia","sciagajacy","osobowosc","aura","parkowanie","sportowiec","inteligent"];
-
-let currentStep = 0;
-
-function startVoting(){
-    if(checkVoteBlock()) return;
-    document.getElementById("voteStart").classList.add("hidden");
-    document.getElementById("voteForm").classList.remove("hidden");
-    // Pokaż pierwszy krok (imię i nazwisko)
-    document.getElementById("step0").classList.add("active");
-}
-
-// Funkcja do przejścia z kroku 0 do kroków kategorii
-function nextStep(){
-    const fullname = document.querySelector('input[name="fullname"]').value.trim();
-    if(!fullname){
-        alert("Podaj imię i nazwisko!");
-        return;
-    }
-    document.getElementById("step0").classList.remove("active");
-    currentStep = 0;
-    generateStep(currentStep);
-}
-
-function generateStep(step){
-    const container = document.getElementById("stepContainer");
-    container.innerHTML = "";
-    
-    if(step >= categories.length){
-        // ostatni krok → pokaż wyślij
-        const btn = document.createElement("button");
-        btn.type="submit";
-        btn.innerText="✅ Wyślij głos";
-        container.appendChild(btn);
+function startVote() {
+    if (localStorage.getItem('zlote_adasie_voted')) {
+        alert('Już oddałeś głos!');
         return;
     }
     
-    const cat = categories[step];
-    const h3 = document.createElement("h3");
-    h3.innerText = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/_/g, ' ');
-    container.appendChild(h3);
+    currentVoteStep = 0;
+    voteData = {};
     
-    const select = document.createElement("select");
-    select.name=cat;
-    select.required=true;
-    const empty = document.createElement("option");
-    empty.value=""; empty.innerText="-- Wybierz --"; 
-    select.appendChild(empty);
+    document.getElementById('vote-start').style.display = 'none';
+    document.getElementById('vote-form').style.display = 'block';
     
-    nomineesData[cat].forEach(n=>{
-        const opt=document.createElement("option");
-        opt.value=n; opt.innerText=n;
-        select.appendChild(opt);
-    });
-    container.appendChild(select);
+    showVoteStep();
+}
+
+function showVoteStep() {
+    const container = document.getElementById('vote-steps');
+    container.innerHTML = '';
     
-    const btn = document.createElement("button");
-    btn.type="button"; 
-    btn.innerText="➡️ Dalej";
-    btn.onclick=function(){ 
-        if(!select.value){
-            alert("Wybierz opcję!");
+    const categories = Object.keys(NOMINEES);
+    
+    // Krok 0: Imię i nazwisko
+    if (currentVoteStep === 0) {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        stepDiv.innerHTML = `
+            <h3>Podaj swoje imię i nazwisko</h3>
+            <input type="text" id="fullname" placeholder="Imię i nazwisko" required>
+            <br>
+            <button type="button" onclick="nextVoteStep()">Dalej ➡️</button>
+        `;
+        container.appendChild(stepDiv);
+        return;
+    }
+    
+    // Kroki 1-15: Kategorie
+    if (currentVoteStep <= categories.length) {
+        const categoryIndex = currentVoteStep - 1;
+        const category = categories[categoryIndex];
+        
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        
+        const progress = `Krok ${currentVoteStep} z ${categories.length}`;
+        
+        stepDiv.innerHTML = `
+            <p style="opacity:0.7;">${progress}</p>
+            <h3>${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}</h3>
+            <select id="vote-select-${category}" required>
+                <option value="">-- Wybierz --</option>
+                ${NOMINEES[category].map(n => `<option value="${n}">${n}</option>`).join('')}
+            </select>
+            <br>
+            <button type="button" onclick="nextVoteStep()">Dalej ➡️</button>
+        `;
+        container.appendChild(stepDiv);
+        return;
+    }
+    
+    // Ostatni krok: Wyślij
+    if (currentVoteStep > categories.length) {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        stepDiv.innerHTML = `
+            <h3>✅ Gotowe!</h3>
+            <p>Sprawdź swoje odpowiedzi i wyślij głos.</p>
+            <button type="button" onclick="submitVote()" style="background:#4CAF50; border-color:#4CAF50;">
+                Wyślij głos 🗳️
+            </button>
+        `;
+        container.appendChild(stepDiv);
+    }
+}
+
+function nextVoteStep() {
+    const categories = Object.keys(NOMINEES);
+    
+    // Walidacja kroku 0
+    if (currentVoteStep === 0) {
+        const fullname = document.getElementById('fullname').value.trim();
+        if (!fullname) {
+            alert('Podaj imię i nazwisko!');
             return;
         }
-        currentStep++; 
-        generateStep(currentStep); 
-    };
-    container.appendChild(btn);
+        voteData.fullname = fullname;
+    }
+    
+    // Walidacja kroków kategorii
+    if (currentVoteStep > 0 && currentVoteStep <= categories.length) {
+        const categoryIndex = currentVoteStep - 1;
+        const category = categories[categoryIndex];
+        const select = document.getElementById(`vote-select-${category}`);
+        
+        if (!select.value) {
+            alert('Wybierz opcję przed przejściem dalej!');
+            return;
+        }
+        
+        voteData[category] = select.value;
+    }
+    
+    currentVoteStep++;
+    showVoteStep();
 }
 
-// === SUBMIT DO GOOGLE SHEETS ===
-document.getElementById("voteForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-    if(checkVoteBlock()) return;
-
-    const formData = new FormData(this);
-    try{
-        const res = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec",{
-            method:"POST",
+async function submitVote() {
+    if (localStorage.getItem('zlote_adasie_voted')) {
+        alert('Już oddałeś głos!');
+        return;
+    }
+    
+    try {
+        // Przygotuj dane do wysłania
+        const formData = new FormData();
+        Object.keys(voteData).forEach(key => {
+            formData.append(key, voteData[key]);
+        });
+        
+        // Wyślij do Google Sheets
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec", {
+            method: 'POST',
             body: formData
         });
-        if(res.ok){
-            localStorage.setItem("zlote_adasie_voted","true");
-            document.getElementById("voteForm").classList.add("hidden");
-            document.getElementById("vote-finish").classList.remove("hidden");
-        }else{
-            alert("Błąd przy zapisie głosu");
+        
+        if (response.ok) {
+            localStorage.setItem('zlote_adasie_voted', 'true');
+            document.getElementById('vote-form').style.display = 'none';
+            document.getElementById('vote-success').style.display = 'block';
+        } else {
+            alert('Wystąpił błąd podczas wysyłania głosu. Spróbuj ponownie.');
         }
-    }catch(err){
-        alert("Błąd połączenia z serwerem");
-        console.error(err);
+    } catch (error) {
+        console.error('Błąd:', error);
+        alert('Nie udało się wysłać głosu. Sprawdź połączenie z internetem.');
     }
+}
+
+// ======================
+// INICJALIZACJA
+// ======================
+
+document.addEventListener('DOMContentLoaded', function() {
+    initNominees();
+    checkIfAlreadyVoted();
 });
