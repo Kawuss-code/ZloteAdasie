@@ -64,12 +64,26 @@ function startVoting(){
     if(checkVoteBlock()) return;
     document.getElementById("voteStart").classList.add("hidden");
     document.getElementById("voteForm").classList.remove("hidden");
+    // Pokaż pierwszy krok (imię i nazwisko)
+    document.getElementById("step0").classList.add("active");
+}
+
+// Funkcja do przejścia z kroku 0 do kroków kategorii
+function nextStep(){
+    const fullname = document.querySelector('input[name="fullname"]').value.trim();
+    if(!fullname){
+        alert("Podaj imię i nazwisko!");
+        return;
+    }
+    document.getElementById("step0").classList.remove("active");
+    currentStep = 0;
     generateStep(currentStep);
 }
 
 function generateStep(step){
     const container = document.getElementById("stepContainer");
     container.innerHTML = "";
+    
     if(step >= categories.length){
         // ostatni krok → pokaż wyślij
         const btn = document.createElement("button");
@@ -78,24 +92,37 @@ function generateStep(step){
         container.appendChild(btn);
         return;
     }
+    
     const cat = categories[step];
     const h3 = document.createElement("h3");
-    h3.innerText = cat;
+    h3.innerText = cat.charAt(0).toUpperCase() + cat.slice(1).replace(/_/g, ' ');
     container.appendChild(h3);
+    
     const select = document.createElement("select");
     select.name=cat;
     select.required=true;
     const empty = document.createElement("option");
-    empty.value=""; empty.innerText="-- Wybierz --"; select.appendChild(empty);
+    empty.value=""; empty.innerText="-- Wybierz --"; 
+    select.appendChild(empty);
+    
     nomineesData[cat].forEach(n=>{
         const opt=document.createElement("option");
         opt.value=n; opt.innerText=n;
         select.appendChild(opt);
     });
     container.appendChild(select);
+    
     const btn = document.createElement("button");
-    btn.type="button"; btn.innerText="➡️ Dalej";
-    btn.onclick=function(){ currentStep++; generateStep(currentStep); };
+    btn.type="button"; 
+    btn.innerText="➡️ Dalej";
+    btn.onclick=function(){ 
+        if(!select.value){
+            alert("Wybierz opcję!");
+            return;
+        }
+        currentStep++; 
+        generateStep(currentStep); 
+    };
     container.appendChild(btn);
 }
 
