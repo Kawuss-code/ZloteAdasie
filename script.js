@@ -41,21 +41,21 @@ function showNominees(category){
   document.getElementById("nomineeCategories").style.display="none";
   document.getElementById("nomineeResults").style.display="block";
   document.getElementById("nomineeCategoryTitle").innerText=category;
-  let list=document.getElementById("nomineeList");
+  const list=document.getElementById("nomineeList");
   list.innerHTML="";
   nomineesData[category].forEach(n=>{
-    let li=document.createElement("li");
+    const li=document.createElement("li");
     li.innerText=n;
     list.appendChild(li);
   });
 }
 
-window.backToNomineeCategories = function(){
+window.backToNomineeCategories=function(){
   document.getElementById("nomineeCategories").style.display="block";
   document.getElementById("nomineeResults").style.display="none";
 }
 
-// === BLOKADA 1 GŁOS ===
+// BLOKADA 1 GŁOS
 function checkVoteBlock(){
   if(localStorage.getItem("zlote_adasie_voted")){
     document.getElementById("voteStart").style.display="none";
@@ -68,11 +68,8 @@ function checkVoteBlock(){
   return false;
 }
 
-// === GŁOSOWANIE ===
-const startBtn = document.getElementById("startVotingBtn");
-const step0Next = document.getElementById("step0Next");
-
-startBtn.addEventListener("click", ()=>{
+// START GŁOSOWANIA
+document.getElementById("startVotingBtn").addEventListener("click",()=>{
   if(checkVoteBlock()) return;
   currentStep=0;
   votes.fullname="";
@@ -83,38 +80,40 @@ startBtn.addEventListener("click", ()=>{
   document.getElementById("vote-finish").style.display="none";
 });
 
-step0Next.addEventListener("click", ()=>{
-  let name = document.getElementById("fullname").value.trim();
-  if(!name){ alert("Podaj imię i nazwisko!"); return;}
-  votes.fullname = name;
+// KROK IMIĘ
+document.getElementById("step0Next").addEventListener("click",()=>{
+  const name=document.getElementById("fullname").value.trim();
+  if(!name){alert("Podaj imię i nazwisko!"); return;}
+  votes.fullname=name;
   document.getElementById("step0").style.display="none";
   showCategoryStep();
 });
 
+// WYŚWIETLANIE KATEGORII
 function showCategoryStep(){
-  const container = document.getElementById("stepContainer");
+  const container=document.getElementById("stepContainer");
   container.innerHTML="";
   if(currentStep >= categories.length){
-    const finish = document.getElementById("vote-finish");
+    const finish=document.getElementById("vote-finish");
     finish.style.display="block";
     finish.innerHTML="<h3>🎉 Gratulacje! Zakończyłeś głosowanie!</h3>";
     submitVote();
     return;
   }
 
-  const cat = categories[currentStep];
-  const h3 = document.createElement("h3");
-  h3.innerText = cat;
+  const cat=categories[currentStep];
+  const h3=document.createElement("h3");
+  h3.innerText=cat;
   container.appendChild(h3);
 
-  const optionsDiv = document.createElement("div");
-  optionsDiv.className = "vote-options";
+  const optionsDiv=document.createElement("div");
+  optionsDiv.className="vote-options";
 
   nomineesData[cat].forEach(n=>{
-    const btn = document.createElement("button");
-    btn.innerText = n;
-    btn.onclick = ()=>{
-      votes[cat] = n;
+    const btn=document.createElement("button");
+    btn.innerText=n;
+    btn.onclick=()=>{
+      votes[cat]=n;
       currentStep++;
       showCategoryStep();
     };
@@ -124,9 +123,9 @@ function showCategoryStep(){
   container.appendChild(optionsDiv);
 
   if(currentStep>0){
-    const backBtn = document.createElement("button");
-    backBtn.innerText = "⬅ Wróć";
-    backBtn.onclick = ()=>{
+    const backBtn=document.createElement("button");
+    backBtn.innerText="⬅ Wróć";
+    backBtn.onclick=()=>{
       currentStep--;
       showCategoryStep();
     };
@@ -134,11 +133,12 @@ function showCategoryStep(){
   }
 }
 
-// === SUBMIT DO GOOGLE SHEETS ===
+// WYSLANIE DO GOOGLE SHEETS
 function submitVote(){
-  const formData = new FormData();
+  const formData=new FormData();
   Object.keys(votes).forEach(k=>formData.append(k,votes[k]));
 
+  // PODMIEŃ SWÓJ URL Z GOOGLE APPS SCRIPT
   fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec",{
     method:"POST",
     body: formData
