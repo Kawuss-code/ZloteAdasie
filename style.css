@@ -7,16 +7,14 @@ main { max-width:900px; margin:40px auto; text-align:center; }
 .tab{display:none;}
 .tab.active{display:block;}
 .hidden{display:none;}
-form { display:flex; flex-direction:column; gap:10px; max-width:500px; margin:20px auto; }
-input, select { padding:8px; }
-button { background:black; color:#d4af37; border:1px solid #d4af37; padding:10px; cursor:pointer; }
-button:hover { background:#d4af37; color:black; }
-footer { text-align:center; padding:20px; border-top:1px solid #d4af37; opacity:0.7; }
-label { display:flex; flex-direction:column; text-align:left; }
-.category-list { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; justify-content: center; }
-.category-list button { flex: 1 0 150px; padding: 10px; background: black; color: #d4af37; border: 1px solid #d4af37; cursor: pointer; }
-.category-list button:hover { background: #d4af37; color: black; }
-.nominees { list-style: none; margin-top: 20px; }
-.nominees li { padding: 8px; border-bottom: 1px solid #d4af37; }
 .step { display:none; flex-direction:column; gap:10px; }
 .step.active { display:flex; }
+button { background:black; color:#d4af37; border:1px solid #d4af37; padding:10px; cursor:pointer; }
+button:hover { background:#d4af37; color:black; }
+.category-list { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top:20px; }
+.nominees { list-style: none; margin-top: 20px; }
+.nominees li { padding: 8px; border-bottom: 1px solid #d4af37; }
+.vote-options { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:20px; }
+.vote-options button { flex:1 0 150px; padding:10px; cursor:pointer; border:1px solid #d4af37; }
+.vote-options button.selected { background:#d4af37; color:black; }
+input { padding:8px; width:60%; margin:auto; }

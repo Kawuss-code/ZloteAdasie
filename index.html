@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Złote Adasie</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Złote Adasie</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -27,23 +27,8 @@
     <!-- NOMINOWANI -->
     <section id="nominees" class="tab">
         <h2>Nominowani</h2>
-
         <div id="nomineeCategories" class="category-list">
-            <button onclick="showNominees('nauczyciel')">🧑‍🏫 Nauczyciel</button>
-            <button onclick="showNominees('wycieczka')">🚌 Wycieczka</button>
-            <button onclick="showNominees('przypal')">🔥 Przypał</button>
-            <button onclick="showNominees('przewodniczacy')">👑 Przewodniczący</button>
-            <button onclick="showNominees('nieobecnosci')">🚫 Nieobecności</button>
-            <button onclick="showNominees('duo')">👯 Duo</button>
-            <button onclick="showNominees('glow_up')">💄 Glow Up</button>
-            <button onclick="showNominees('wypowiedz')">🗣️ Wypowiedź</button>
-            <button onclick="showNominees('osiagniecia')">🏆 Osiągnięcia</button>
-            <button onclick="showNominees('sciagajacy')">📄 Ściągający</button>
-            <button onclick="showNominees('osobowosc')">😎 Osobowość</button>
-            <button onclick="showNominees('aura')">✨ Aura</button>
-            <button onclick="showNominees('parkowanie')">🅿️ Parkowanie</button>
-            <button onclick="showNominees('sportowiec')">🏅 Sportowiec</button>
-            <button onclick="showNominees('inteligent')">🧠 Inteligent</button>
+            <!-- Kategorie generowane w JS -->
         </div>
 
         <div id="nomineeResults" class="hidden">
@@ -61,21 +46,18 @@
             <button onclick="startVoting()">🗳️ Głosuj</button>
         </div>
 
-        <form id="voteForm" class="hidden">
+        <div id="voteForm" class="hidden">
             <!-- Krok 0: imię i nazwisko -->
             <div class="step active" id="step0">
                 <h3>Imię i nazwisko</h3>
-                <input type="text" name="fullname" placeholder="Imię i nazwisko" required>
+                <input type="text" id="fullname" placeholder="Imię i nazwisko">
                 <button type="button" onclick="nextStep()">➡️ Dalej</button>
             </div>
 
             <div id="stepContainer"></div>
 
-            <div id="vote-finish" class="hidden">
-                <h3>✅ Dzięki za oddanie głosu!</h3>
-                <p>Twój głos został zapisany.</p>
-            </div>
-        </form>
+            <div id="vote-finish" class="hidden"></div>
+        </div>
     </section>
 </main>
 
