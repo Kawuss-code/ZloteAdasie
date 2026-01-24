@@ -11,9 +11,9 @@
 <header>
     <h1>🏆 Złote Adasie</h1>
     <nav>
-        <button onclick="switchTab('home')">Strona główna</button>
-        <button onclick="switchTab('nominees')">Nominowani</button>
-        <button onclick="switchTab('vote')">Głosowanie</button>
+        <button data-tab="home">Strona główna</button>
+        <button data-tab="nominees">Nominowani</button>
+        <button data-tab="vote">Głosowanie</button>
     </nav>
 </header>
 
@@ -38,7 +38,7 @@
         <div id="nominee-list" class="nominee-display" style="display:none;">
             <h3 id="category-title"></h3>
             <ul id="nominees"></ul>
-            <button onclick="backToCategories()">⬅️ Wróć do kategorii</button>
+            <button id="back-to-categories">⬅️ Wróć do kategorii</button>
         </div>
     </section>
 
@@ -55,15 +55,13 @@
 
         <div id="vote-start">
             <p>Kliknij przycisk poniżej, aby rozpocząć głosowanie</p>
-            <button onclick="startVote()" class="big-button">🗳️ Rozpocznij głosowanie</button>
+            <button id="start-voting-btn" class="big-button">🗳️ Rozpocznij głosowanie</button>
         </div>
 
         <div id="vote-form" style="display:none;">
-            <form id="voting-form">
-                <div id="vote-steps">
-                    <!-- Generowane przez JS -->
-                </div>
-            </form>
+            <div id="vote-steps">
+                <!-- Generowane przez JS -->
+            </div>
         </div>
 
         <div id="vote-success" style="display:none;">

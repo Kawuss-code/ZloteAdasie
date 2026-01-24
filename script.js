@@ -62,15 +62,44 @@ let currentVoteStep = 0;
 let voteData = {};
 
 // ======================
-// ZAKŁADKI
+// INICJALIZACJA
 // ======================
 
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initNominees();
+    initVoting();
+    checkIfAlreadyVoted();
+});
+
+// ======================
+// NAWIGACJA (ZAKŁADKI)
+// ======================
+
+function initNavigation() {
+    const navButtons = document.querySelectorAll('nav button[data-tab]');
+    
+    navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+            switchTab(tabName);
+        });
+    });
+}
+
 function switchTab(tabName) {
+    // Ukryj wszystkie zakładki
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
-    document.getElementById(tabName).classList.add('active');
     
+    // Pokaż wybraną zakładkę
+    const targetTab = document.getElementById(tabName);
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    // Sprawdź stan głosowania
     if (tabName === 'vote') {
         checkIfAlreadyVoted();
     }
@@ -82,26 +111,38 @@ function switchTab(tabName) {
 
 function initNominees() {
     const container = document.getElementById('category-buttons');
+    if (!container) return;
+    
     container.innerHTML = '';
     
     Object.keys(NOMINEES).forEach(category => {
         const button = document.createElement('button');
         button.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
-        button.onclick = () => showNominees(category);
+        button.addEventListener('click', () => showNominees(category));
         container.appendChild(button);
     });
+    
+    // Przycisk "Wróć"
+    const backBtn = document.getElementById('back-to-categories');
+    if (backBtn) {
+        backBtn.addEventListener('click', backToCategories);
+    }
 }
 
 function showNominees(category) {
-    document.getElementById('category-buttons').style.display = 'none';
-    document.getElementById('nominee-list').style.display = 'block';
-    
+    const buttonsContainer = document.getElementById('category-buttons');
+    const listContainer = document.getElementById('nominee-list');
     const title = document.getElementById('category-title');
+    const list = document.getElementById('nominees');
+    
+    if (!buttonsContainer || !listContainer || !title || !list) return;
+    
+    buttonsContainer.style.display = 'none';
+    listContainer.style.display = 'block';
+    
     title.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
     
-    const list = document.getElementById('nominees');
     list.innerHTML = '';
-    
     NOMINEES[category].forEach(nominee => {
         const li = document.createElement('li');
         li.textContent = nominee;
@@ -110,25 +151,40 @@ function showNominees(category) {
 }
 
 function backToCategories() {
-    document.getElementById('category-buttons').style.display = 'grid';
-    document.getElementById('nominee-list').style.display = 'none';
+    const buttonsContainer = document.getElementById('category-buttons');
+    const listContainer = document.getElementById('nominee-list');
+    
+    if (buttonsContainer) buttonsContainer.style.display = 'grid';
+    if (listContainer) listContainer.style.display = 'none';
 }
 
 // ======================
 // GŁOSOWANIE
 // ======================
 
+function initVoting() {
+    const startBtn = document.getElementById('start-voting-btn');
+    if (startBtn) {
+        startBtn.addEventListener('click', startVote);
+    }
+}
+
 function checkIfAlreadyVoted() {
+    const voteStart = document.getElementById('vote-start');
+    const voteForm = document.getElementById('vote-form');
+    const voteBlocked = document.getElementById('vote-blocked');
+    const voteSuccess = document.getElementById('vote-success');
+    
     if (localStorage.getItem('zlote_adasie_voted')) {
-        document.getElementById('vote-start').style.display = 'none';
-        document.getElementById('vote-form').style.display = 'none';
-        document.getElementById('vote-blocked').style.display = 'block';
-        document.getElementById('vote-success').style.display = 'none';
+        if (voteStart) voteStart.style.display = 'none';
+        if (voteForm) voteForm.style.display = 'none';
+        if (voteBlocked) voteBlocked.style.display = 'block';
+        if (voteSuccess) voteSuccess.style.display = 'none';
     } else {
-        document.getElementById('vote-start').style.display = 'block';
-        document.getElementById('vote-form').style.display = 'none';
-        document.getElementById('vote-blocked').style.display = 'none';
-        document.getElementById('vote-success').style.display = 'none';
+        if (voteStart) voteStart.style.display = 'block';
+        if (voteForm) voteForm.style.display = 'none';
+        if (voteBlocked) voteBlocked.style.display = 'none';
+        if (voteSuccess) voteSuccess.style.display = 'none';
     }
 }
 
@@ -141,14 +197,19 @@ function startVote() {
     currentVoteStep = 0;
     voteData = {};
     
-    document.getElementById('vote-start').style.display = 'none';
-    document.getElementById('vote-form').style.display = 'block';
+    const voteStart = document.getElementById('vote-start');
+    const voteForm = document.getElementById('vote-form');
+    
+    if (voteStart) voteStart.style.display = 'none';
+    if (voteForm) voteForm.style.display = 'block';
     
     showVoteStep();
 }
 
 function showVoteStep() {
     const container = document.getElementById('vote-steps');
+    if (!container) return;
+    
     container.innerHTML = '';
     
     const categories = Object.keys(NOMINEES);
@@ -159,11 +220,17 @@ function showVoteStep() {
         stepDiv.className = 'vote-step';
         stepDiv.innerHTML = `
             <h3>Podaj swoje imię i nazwisko</h3>
-            <input type="text" id="fullname" placeholder="Imię i nazwisko" required>
+            <input type="text" id="fullname-input" placeholder="Imię i nazwisko" required>
             <br>
-            <button type="button" onclick="nextVoteStep()">Dalej ➡️</button>
+            <button type="button" id="next-step-0">Dalej ➡️</button>
         `;
         container.appendChild(stepDiv);
+        
+        // Event listener dla przycisku
+        const nextBtn = document.getElementById('next-step-0');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextVoteStep);
+        }
         return;
     }
     
@@ -185,9 +252,15 @@ function showVoteStep() {
                 ${NOMINEES[category].map(n => `<option value="${n}">${n}</option>`).join('')}
             </select>
             <br>
-            <button type="button" onclick="nextVoteStep()">Dalej ➡️</button>
+            <button type="button" id="next-step-${currentVoteStep}">Dalej ➡️</button>
         `;
         container.appendChild(stepDiv);
+        
+        // Event listener dla przycisku
+        const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextVoteStep);
+        }
         return;
     }
     
@@ -198,20 +271,29 @@ function showVoteStep() {
         stepDiv.innerHTML = `
             <h3>✅ Gotowe!</h3>
             <p>Sprawdź swoje odpowiedzi i wyślij głos.</p>
-            <button type="button" onclick="submitVote()" style="background:#4CAF50; border-color:#4CAF50;">
+            <button type="button" id="submit-vote-btn" style="background:#4CAF50; border-color:#4CAF50;">
                 Wyślij głos 🗳️
             </button>
         `;
         container.appendChild(stepDiv);
+        
+        // Event listener dla przycisku wyślij
+        const submitBtn = document.getElementById('submit-vote-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', submitVote);
+        }
     }
 }
 
 function nextVoteStep() {
     const categories = Object.keys(NOMINEES);
     
-    // Walidacja kroku 0
+    // Walidacja kroku 0 (imię i nazwisko)
     if (currentVoteStep === 0) {
-        const fullname = document.getElementById('fullname').value.trim();
+        const fullnameInput = document.getElementById('fullname-input');
+        if (!fullnameInput) return;
+        
+        const fullname = fullnameInput.value.trim();
         if (!fullname) {
             alert('Podaj imię i nazwisko!');
             return;
@@ -225,7 +307,7 @@ function nextVoteStep() {
         const category = categories[categoryIndex];
         const select = document.getElementById(`vote-select-${category}`);
         
-        if (!select.value) {
+        if (!select || !select.value) {
             alert('Wybierz opcję przed przejściem dalej!');
             return;
         }
@@ -258,8 +340,12 @@ async function submitVote() {
         
         if (response.ok) {
             localStorage.setItem('zlote_adasie_voted', 'true');
-            document.getElementById('vote-form').style.display = 'none';
-            document.getElementById('vote-success').style.display = 'block';
+            
+            const voteForm = document.getElementById('vote-form');
+            const voteSuccess = document.getElementById('vote-success');
+            
+            if (voteForm) voteForm.style.display = 'none';
+            if (voteSuccess) voteSuccess.style.display = 'block';
         } else {
             alert('Wystąpił błąd podczas wysyłania głosu. Spróbuj ponownie.');
         }
@@ -268,12 +354,3 @@ async function submitVote() {
         alert('Nie udało się wysłać głosu. Sprawdź połączenie z internetem.');
     }
 }
-
-// ======================
-// INICJALIZACJA
-// ======================
-
-document.addEventListener('DOMContentLoaded', function() {
-    initNominees();
-    checkIfAlreadyVoted();
-});
