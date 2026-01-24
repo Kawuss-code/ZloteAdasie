@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Złote Adasie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>🏆 Złote Adasie</h1>
+    <nav>
+        <button onclick="showTab('home')">Strona główna</button>
+        <button onclick="showTab('nominees')">Nominowani</button>
+        <button onclick="showTab('vote')">Głosowanie</button>
+    </nav>
+</header>
+
+<main>
+    <!-- HOME -->
+    <section id="home" class="tab active">
+        <h2>Witaj na Złotych Adasiach</h2>
+        <p>Oddaj głos w dwóch kategoriach.</p>
+    </section>
+
+    <!-- NOMINOWANI -->
+    <section id="nominees" class="tab">
+        <h2>Nominowani</h2>
+
+        <div id="nomineeCategories" class="category-list">
+            <button onclick="showNominees('best')">🏆 Najlepszy Adasiu</button>
+            <button onclick="showNominees('funny')">😂 Najśmieszniejszy</button>
+        </div>
+
+        <div id="nomineeResults" class="hidden">
+            <h3 id="nomineeCategoryTitle"></h3>
+            <ul id="nomineeList" class="nominees"></ul>
+            <button onclick="backToNomineeCategories()">⬅ Wróć</button>
+        </div>
+    </section>
+
+    <!-- GŁOSOWANIE -->
+    <section id="vote" class="tab">
+        <h2>Głosowanie</h2>
+
+        <div id="voteStart">
+            <button onclick="startVoting()">🗳️ Głosuj</button>
+        </div>
+
+        <form id="voteForm" class="hidden">
+            <!-- KROK 1 -->
+            <div id="step1">
+                <h3>🏆 Najlepszy Adasiu</h3>
+
+                <label>
+                    Imię i nazwisko:
+                    <input type="text" name="fullname" required>
+                </label>
+
+
+                <label>
+                    Na kogo głosujesz?
+                    <select name="best_vote" required>
+                        <option value="Adasiu Wielki">Adasiu Wielki</option>
+                        <option value="Adasiu Legendarny">Adasiu Legendarny</option>
+                        <option value="Adasiu Turbo">Adasiu Turbo</option>
+                    </select>
+                </label>
+
+                <button type="button" onclick="goToStep2()">➡️ Dalej</button>
+            </div>
+
+            <!-- KROK 2 -->
+            <div id="step2" class="hidden">
+                <h3>😂 Najśmieszniejszy</h3>
+
+                <label>
+                    Uzasadnienie:
+                    <textarea name="message" required></textarea>
+                </label>
+
+                <label>
+                    Na kogo głosujesz?
+                    <select name="funny_vote" required>
+                        <option value="Adasiu Mem">Adasiu Mem</option>
+                        <option value="Adasiu Śmieszek">Adasiu Śmieszek</option>
+                        <option value="Adasiu Komik">Adasiu Komik</option>
+                    </select>
+                </label>
+
+                <button type="submit">✅ Zakończ</button>
+            </div>
+        </form>
+
+        <div id="vote-finish" class="hidden">
+            <h3>✅ Dzięki za oddanie głosu!</h3>
+            <p>Twój głos został zapisany.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Złote Adasie</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
