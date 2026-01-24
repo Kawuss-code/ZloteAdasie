@@ -82,7 +82,7 @@ function goToStep2() {
 // === SUBMIT DO GOOGLE SHEETS ===
 document.getElementById("voteForm").addEventListener("submit", async function(e) {
     e.preventDefault();
-    if (checkVoteBlock()) return;
+    if (localStorage.getItem("zlote_adasie_voted")) return;
 
     const formData = new FormData(this); // THIS = formularz
 
@@ -94,7 +94,6 @@ document.getElementById("voteForm").addEventListener("submit", async function(e)
 
         if (res.ok) {
             localStorage.setItem("zlote_adasie_voted", "true");
-
             document.getElementById("voteForm").classList.add("hidden");
             document.getElementById("vote-finish").classList.remove("hidden");
         } else {
@@ -105,5 +104,6 @@ document.getElementById("voteForm").addEventListener("submit", async function(e)
         console.error(err);
     }
 });
+
 
 
