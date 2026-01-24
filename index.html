@@ -502,6 +502,15 @@ function showNominees(category) {
         li.textContent = nominee;
         list.appendChild(li);
     });
+    
+    // Upewnij się, że przycisk "Wróć" ma event listener
+    const backBtn = document.getElementById('back-to-categories');
+    if (backBtn) {
+        backBtn.onclick = function(e) {
+            e.preventDefault();
+            backToCategories();
+        };
+    }
 }
 
 function backToCategories() {
@@ -718,14 +727,22 @@ async function submitVote() {
         formData.append('sportowiec', voteData.sportowiec || '');
         formData.append('inteligent', voteData.inteligent || '');
         
-        await fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
+        console.log('Wysyłam request...');
+        
+        fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
             method: 'POST',
             mode: 'no-cors',
             body: formData
+        }).then(() => {
+            console.log('Request zakończony (no-cors mode)');
+        }).catch(err => {
+            console.log('Błąd fetch:', err);
         });
         
-        console.log('Głos wysłany');
+        // Czekamy 2 sekundy na wysłanie
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
+        console.log('Oznaczam jako wysłane');
         sessionStorage.setItem('zlote_adasie_voted', 'true');
         
         const voteForm = document.getElementById('vote-form');
