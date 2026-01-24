@@ -21,23 +21,30 @@
     <!-- HOME -->
     <section id="home" class="tab active">
         <h2>Witaj na Złotych Adasiach</h2>
-        <p>Oddaj głos w dwóch kategoriach.</p>
+        <p>Oddaj głos w swoich ulubionych kategoriach.</p>
     </section>
 
     <!-- NOMINOWANI -->
     <section id="nominees" class="tab">
         <h2>Nominowani</h2>
-
-        <div id="nomineeCategories" class="category-list">
-            <button onclick="showNominees('best')">🏆 Najlepszy Adasiu</button>
-            <button onclick="showNominees('funny')">😂 Najśmieszniejszy</button>
-        </div>
-
-        <div id="nomineeResults" class="hidden">
-            <h3 id="nomineeCategoryTitle"></h3>
-            <ul id="nomineeList" class="nominees"></ul>
-            <button onclick="backToNomineeCategories()">⬅ Wróć</button>
-        </div>
+        <p>Kategorie:</p>
+        <ul>
+            <li>nauczyciel</li>
+            <li>wycieczka</li>
+            <li>przypal</li>
+            <li>przewodniczacy</li>
+            <li>nieobecnosci</li>
+            <li>duo</li>
+            <li>glow up</li>
+            <li>wypowiedz</li>
+            <li>osiagniecia</li>
+            <li>sciagajacy</li>
+            <li>osobowosc</li>
+            <li>aura</li>
+            <li>parkowanie</li>
+            <li>sportowiec</li>
+            <li>inteligent</li>
+        </ul>
     </section>
 
     <!-- GŁOSOWANIE -->
@@ -49,48 +56,132 @@
         </div>
 
         <form id="voteForm" class="hidden">
-            <!-- KROK 1 -->
-            <div id="step1">
-                <h3>🏆 Najlepszy Adasiu</h3>
+            <h3>Imię i nazwisko</h3>
+            <input type="text" name="fullname" placeholder="Imię i nazwisko" required>
 
-                <label>
-                    Imię i nazwisko:
-                    <input type="text" name="fullname" required>
-                </label>
+            <h3>Kategorie</h3>
 
+            <label>Nauczyciel
+                <select name="nauczyciel" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Nauczyciel 1">Nauczyciel 1</option>
+                    <option value="Nauczyciel 2">Nauczyciel 2</option>
+                </select>
+            </label>
 
-                <label>
-                    Na kogo głosujesz?
-                    <select name="best_vote" required>
-                        <option value="Adasiu Wielki">Adasiu Wielki</option>
-                        <option value="Adasiu Legendarny">Adasiu Legendarny</option>
-                        <option value="Adasiu Turbo">Adasiu Turbo</option>
-                    </select>
-                </label>
+            <label>Wycieczka
+                <select name="wycieczka" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Wycieczka 1">Wycieczka 1</option>
+                    <option value="Wycieczka 2">Wycieczka 2</option>
+                </select>
+            </label>
 
-                <button type="button" onclick="goToStep2()">➡️ Dalej</button>
-            </div>
+            <label>Przypał
+                <select name="przypal" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
 
-            <!-- KROK 2 -->
-            <div id="step2" class="hidden">
-                <h3>😂 Najśmieszniejszy</h3>
+            <label>Przewodniczący
+                <select name="przewodniczacy" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Przewodniczacy 1">Przewodniczący 1</option>
+                    <option value="Przewodniczacy 2">Przewodniczący 2</option>
+                </select>
+            </label>
 
-                <label>
-                    Uzasadnienie:
-                    <textarea name="message" required></textarea>
-                </label>
+            <label>Nieobecności
+                <select name="nieobecnosci" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
 
-                <label>
-                    Na kogo głosujesz?
-                    <select name="funny_vote" required>
-                        <option value="Adasiu Mem">Adasiu Mem</option>
-                        <option value="Adasiu Śmieszek">Adasiu Śmieszek</option>
-                        <option value="Adasiu Komik">Adasiu Komik</option>
-                    </select>
-                </label>
+            <label>Duo
+                <select name="duo" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Duo 1">Duo 1</option>
+                    <option value="Duo 2">Duo 2</option>
+                </select>
+            </label>
 
-                <button type="submit">✅ Zakończ</button>
-            </div>
+            <label>Glow up
+                <select name="glow_up" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Wypowiedź
+                <select name="wypowiedz" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Osiągnięcia
+                <select name="osiagniecia" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Ściągający
+                <select name="sciagajacy" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Osobowość
+                <select name="osobowosc" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Aura
+                <select name="aura" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Parkowanie
+                <select name="parkowanie" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Sportowiec
+                <select name="sportowiec" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <label>Inteligent
+                <select name="inteligent" required>
+                    <option value="">-- Wybierz --</option>
+                    <option value="Osoba 1">Osoba 1</option>
+                    <option value="Osoba 2">Osoba 2</option>
+                </select>
+            </label>
+
+            <button type="submit">✅ Wyślij głos</button>
         </form>
 
         <div id="vote-finish" class="hidden">
