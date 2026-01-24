@@ -4,7 +4,296 @@
     <meta charset="UTF-8">
     <title>Złote Adasie 2026</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    color: #d4af37;
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    text-align: center;
+    border-bottom: 3px solid #d4af37;
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 15px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+nav button {
+    background: transparent;
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background: #d4af37;
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.5);
+}
+
+main {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.info-box {
+    background: rgba(212, 175, 55, 0.1);
+    border: 2px solid #d4af37;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: center;
+}
+
+.info-box p {
+    margin: 10px 0;
+    font-size: 1.1em;
+}
+
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.category-grid button {
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.category-grid button:hover {
+    background: #d4af37;
+    color: #0a0a0a;
+    transform: scale(1.05);
+}
+
+.nominee-display {
+    text-align: center;
+}
+
+.nominee-display h3 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+}
+
+#nominees {
+    list-style: none;
+    max-width: 500px;
+    margin: 20px auto;
+}
+
+#nominees li {
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid #d4af37;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+#nominees li:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateX(5px);
+}
+
+button {
+    background: #0a0a0a;
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    padding: 12px 25px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #d4af37;
+    color: #0a0a0a;
+}
+
+.big-button {
+    padding: 20px 40px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+#vote-start {
+    text-align: center;
+}
+
+#vote-start p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.vote-step {
+    background: rgba(212, 175, 55, 0.05);
+    border: 2px solid #d4af37;
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.vote-step h3 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.vote-step input {
+    width: 100%;
+    max-width: 400px;
+    padding: 12px;
+    font-size: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.nominee-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.nominee-btn {
+    padding: 15px;
+    font-size: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nominee-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: scale(1.05);
+}
+
+.nominee-btn.selected {
+    background: #d4af37;
+    color: #0a0a0a;
+    font-weight: bold;
+}
+
+.message-box {
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.message-box.success {
+    background: rgba(76, 175, 80, 0.1);
+    border: 2px solid #4CAF50;
+    color: #4CAF50;
+}
+
+.message-box.error {
+    background: rgba(244, 67, 54, 0.1);
+    border: 2px solid #f44336;
+    color: #f44336;
+}
+
+.message-box h3 {
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 2px solid #d4af37;
+    margin-top: 60px;
+    opacity: 0.7;
+}
+
+.progress-info {
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+    
+    .category-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    nav {
+        flex-direction: column;
+    }
+    
+    .nominee-buttons {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
 </head>
 <body>
 
@@ -32,9 +321,7 @@
     <!-- NOMINOWANI -->
     <section id="nominees" class="tab-content">
         <h2>Nominowani</h2>
-        <div id="category-buttons" class="category-grid">
-            <!-- Generowane przez JS -->
-        </div>
+        <div id="category-buttons" class="category-grid"></div>
         <div id="nominee-list" class="nominee-display" style="display:none;">
             <h3 id="category-title"></h3>
             <ul id="nominees"></ul>
@@ -59,9 +346,7 @@
         </div>
 
         <div id="vote-form" style="display:none;">
-            <div id="vote-steps">
-                <!-- Generowane przez JS -->
-            </div>
+            <div id="vote-steps"></div>
         </div>
 
         <div id="vote-success" style="display:none;">
@@ -77,6 +362,370 @@
     <p>© 2026 Złote Adasie | Twój głos się liczy!</p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+const NOMINEES = {
+    nauczyciel: ["Pani Kowalska", "Pan Nowak", "Pani Wiśniewska"],
+    wycieczka: ["Wycieczka do zoo", "Wycieczka do kina", "Wycieczka w góry"],
+    przypal: ["Janek", "Kasia", "Marek"],
+    przewodniczacy: ["Anna", "Tomek", "Piotr"],
+    nieobecnosci: ["Ola", "Kacper", "Bartek"],
+    duo: ["Marta & Ania", "Jan & Tomek", "Kasia & Ola"],
+    glow_up: ["Monika", "Paweł", "Natalia"],
+    wypowiedz: ["Adam", "Klaudia", "Łukasz"],
+    osiagniecia: ["Asia", "Marcin", "Ewa"],
+    sciagajacy: ["Filip", "Daria", "Michał"],
+    osobowosc: ["Karolina", "Damian", "Patryk"],
+    aura: ["Laura", "Kamil", "Natalia"],
+    parkowanie: ["Piotr", "Szymon", "Mateusz"],
+    sportowiec: ["Oliwia", "Robert", "Julia"],
+    inteligent: ["Michał", "Anna", "Kacper"]
+};
+
+const CATEGORY_ICONS = {
+    nauczyciel: "🧑‍🏫",
+    wycieczka: "🚌",
+    przypal: "🔥",
+    przewodniczacy: "👑",
+    nieobecnosci: "🚫",
+    duo: "👯",
+    glow_up: "💄",
+    wypowiedz: "🗣️",
+    osiagniecia: "🏆",
+    sciagajacy: "📄",
+    osobowosc: "😎",
+    aura: "✨",
+    parkowanie: "🅿️",
+    sportowiec: "🏅",
+    inteligent: "🧠"
+};
+
+const CATEGORY_NAMES = {
+    nauczyciel: "Nauczyciel",
+    wycieczka: "Wycieczka",
+    przypal: "Przypał",
+    przewodniczacy: "Przewodniczący",
+    nieobecnosci: "Nieobecności",
+    duo: "Duo",
+    glow_up: "Glow Up",
+    wypowiedz: "Wypowiedź",
+    osiagniecia: "Osiągnięcia",
+    sciagajacy: "Ściągający",
+    osobowosc: "Osobowość",
+    aura: "Aura",
+    parkowanie: "Parkowanie",
+    sportowiec: "Sportowiec",
+    inteligent: "Inteligent"
+};
+
+let currentVoteStep = 0;
+let voteData = {};
+
+// INICJALIZACJA
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+    initNominees();
+    initVoting();
+    checkIfAlreadyVoted();
+});
+
+// NAWIGACJA
+function initNavigation() {
+    const navButtons = document.querySelectorAll('nav button[data-tab]');
+    navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            switchTab(this.getAttribute('data-tab'));
+        });
+    });
+}
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    
+    const targetTab = document.getElementById(tabName);
+    if (targetTab) {
+        targetTab.classList.add('active');
+    }
+    
+    if (tabName === 'vote') {
+        checkIfAlreadyVoted();
+    }
+}
+
+// NOMINOWANI
+function initNominees() {
+    const container = document.getElementById('category-buttons');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    Object.keys(NOMINEES).forEach(category => {
+        const button = document.createElement('button');
+        button.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
+        button.addEventListener('click', () => showNominees(category));
+        container.appendChild(button);
+    });
+    
+    const backBtn = document.getElementById('back-to-categories');
+    if (backBtn) {
+        backBtn.addEventListener('click', backToCategories);
+    }
+}
+
+function showNominees(category) {
+    const buttonsContainer = document.getElementById('category-buttons');
+    const listContainer = document.getElementById('nominee-list');
+    const title = document.getElementById('category-title');
+    const list = document.getElementById('nominees');
+    
+    if (!buttonsContainer || !listContainer || !title || !list) return;
+    
+    buttonsContainer.style.display = 'none';
+    listContainer.style.display = 'block';
+    
+    title.innerHTML = `${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}`;
+    
+    list.innerHTML = '';
+    NOMINEES[category].forEach(nominee => {
+        const li = document.createElement('li');
+        li.textContent = nominee;
+        list.appendChild(li);
+    });
+}
+
+function backToCategories() {
+    const buttonsContainer = document.getElementById('category-buttons');
+    const listContainer = document.getElementById('nominee-list');
+    
+    if (buttonsContainer) buttonsContainer.style.display = 'grid';
+    if (listContainer) listContainer.style.display = 'none';
+}
+
+// GŁOSOWANIE
+function initVoting() {
+    const startBtn = document.getElementById('start-voting-btn');
+    if (startBtn) {
+        startBtn.addEventListener('click', startVote);
+    }
+}
+
+function checkIfAlreadyVoted() {
+    const hasVoted = sessionStorage.getItem('zlote_adasie_voted');
+    const voteStart = document.getElementById('vote-start');
+    const voteForm = document.getElementById('vote-form');
+    const voteBlocked = document.getElementById('vote-blocked');
+    const voteSuccess = document.getElementById('vote-success');
+    
+    if (hasVoted) {
+        if (voteStart) voteStart.style.display = 'none';
+        if (voteForm) voteForm.style.display = 'none';
+        if (voteBlocked) voteBlocked.style.display = 'block';
+        if (voteSuccess) voteSuccess.style.display = 'none';
+    } else {
+        if (voteStart) voteStart.style.display = 'block';
+        if (voteForm) voteForm.style.display = 'none';
+        if (voteBlocked) voteBlocked.style.display = 'none';
+        if (voteSuccess) voteSuccess.style.display = 'none';
+    }
+}
+
+function startVote() {
+    if (sessionStorage.getItem('zlote_adasie_voted')) {
+        alert('Już oddałeś głos!');
+        return;
+    }
+    
+    currentVoteStep = 0;
+    voteData = {};
+    
+    const voteStart = document.getElementById('vote-start');
+    const voteForm = document.getElementById('vote-form');
+    
+    if (voteStart) voteStart.style.display = 'none';
+    if (voteForm) voteForm.style.display = 'block';
+    
+    showVoteStep();
+}
+
+function showVoteStep() {
+    const container = document.getElementById('vote-steps');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    const categories = Object.keys(NOMINEES);
+    
+    // Krok 0: Imię i nazwisko
+    if (currentVoteStep === 0) {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        stepDiv.innerHTML = `
+            <h3>Podaj swoje imię i nazwisko</h3>
+            <input type="text" id="fullname-input" placeholder="Imię i nazwisko" required>
+            <br>
+            <button type="button" id="next-step-0">Dalej ➡️</button>
+        `;
+        container.appendChild(stepDiv);
+        
+        const nextBtn = document.getElementById('next-step-0');
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextVoteStep);
+        }
+        return;
+    }
+    
+    // Kroki 1-15: Kategorie
+    if (currentVoteStep <= categories.length) {
+        const categoryIndex = currentVoteStep - 1;
+        const category = categories[categoryIndex];
+        
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        
+        const progress = `Krok ${currentVoteStep} z ${categories.length}`;
+        
+        stepDiv.innerHTML = `
+            <p class="progress-info">${progress}</p>
+            <h3>${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}</h3>
+            <div class="nominee-buttons" id="nominee-buttons-${category}"></div>
+            <br>
+            <button type="button" id="next-step-${currentVoteStep}" disabled>Dalej ➡️</button>
+        `;
+        container.appendChild(stepDiv);
+        
+        // Dodaj przyciski z kandydatami
+        const buttonsContainer = document.getElementById(`nominee-buttons-${category}`);
+        NOMINEES[category].forEach(nominee => {
+            const btn = document.createElement('button');
+            btn.className = 'nominee-btn';
+            btn.textContent = nominee;
+            btn.onclick = () => selectNominee(category, nominee, btn);
+            buttonsContainer.appendChild(btn);
+        });
+        
+        const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
+        if (nextBtn) {
+            nextBtn.addEventListener('click', nextVoteStep);
+        }
+        return;
+    }
+    
+    // Ostatni krok: Wyślij
+    if (currentVoteStep > categories.length) {
+        const stepDiv = document.createElement('div');
+        stepDiv.className = 'vote-step';
+        stepDiv.innerHTML = `
+            <h3>✅ Gotowe!</h3>
+            <p>Sprawdź swoje odpowiedzi i wyślij głos.</p>
+            <button type="button" id="submit-vote-btn" style="background:#4CAF50; border-color:#4CAF50;">
+                Wyślij głos 🗳️
+            </button>
+        `;
+        container.appendChild(stepDiv);
+        
+        const submitBtn = document.getElementById('submit-vote-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', submitVote);
+        }
+    }
+}
+
+function selectNominee(category, nominee, buttonElement) {
+    // Usuń zaznaczenie z innych przycisków
+    const allButtons = buttonElement.parentElement.querySelectorAll('.nominee-btn');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Zaznacz wybrany przycisk
+    buttonElement.classList.add('selected');
+    
+    // Zapisz wybór
+    voteData[category] = nominee;
+    
+    // Odblokuj przycisk "Dalej"
+    const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
+    if (nextBtn) {
+        nextBtn.disabled = false;
+    }
+}
+
+function nextVoteStep() {
+    const categories = Object.keys(NOMINEES);
+    
+    // Walidacja kroku 0 (imię i nazwisko)
+    if (currentVoteStep === 0) {
+        const fullnameInput = document.getElementById('fullname-input');
+        if (!fullnameInput) return;
+        
+        const fullname = fullnameInput.value.trim();
+        if (!fullname) {
+            alert('Podaj imię i nazwisko!');
+            return;
+        }
+        voteData.fullname = fullname;
+    }
+    
+    // Walidacja kroków kategorii
+    if (currentVoteStep > 0 && currentVoteStep <= categories.length) {
+        const categoryIndex = currentVoteStep - 1;
+        const category = categories[categoryIndex];
+        
+        if (!voteData[category]) {
+            alert('Wybierz opcję przed przejściem dalej!');
+            return;
+        }
+    }
+    
+    currentVoteStep++;
+    showVoteStep();
+}
+
+async function submitVote() {
+    if (sessionStorage.getItem('zlote_adasie_voted')) {
+        alert('Już oddałeś głos!');
+        return;
+    }
+    
+    try {
+        const formData = new URLSearchParams();
+        formData.append('fullname', voteData.fullname || '');
+        formData.append('nauczyciel', voteData.nauczyciel || '');
+        formData.append('wycieczka', voteData.wycieczka || '');
+        formData.append('przypal', voteData.przypal || '');
+        formData.append('przewodniczacy', voteData.przewodniczacy || '');
+        formData.append('nieobecnosci', voteData.nieobecnosci || '');
+        formData.append('duo', voteData.duo || '');
+        formData.append('glow_up', voteData.glow_up || '');
+        formData.append('wypowiedz', voteData.wypowiedz || '');
+        formData.append('osiagniecia', voteData.osiagniecia || '');
+        formData.append('sciagajacy', voteData.sciagajacy || '');
+        formData.append('osobowosc', voteData.osobowosc || '');
+        formData.append('aura', voteData.aura || '');
+        formData.append('parkowanie', voteData.parkowanie || '');
+        formData.append('sportowiec', voteData.sportowiec || '');
+        formData.append('inteligent', voteData.inteligent || '');
+        
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec", {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (response.ok) {
+            sessionStorage.setItem('zlote_adasie_voted', 'true');
+            
+            const voteForm = document.getElementById('vote-form');
+            const voteSuccess = document.getElementById('vote-success');
+            
+            if (voteForm) voteForm.style.display = 'none';
+            if (voteSuccess) voteSuccess.style.display = 'block';
+        } else {
+            alert('Wystąpił błąd podczas wysyłania głosu. Spróbuj ponownie.');
+        }
+    } catch (error) {
+        console.error('Błąd:', error);
+        alert('Nie udało się wysłać głosu. Sprawdź połączenie z internetem.');
+    }
+}
+</script>
+
 </body>
 </html>
