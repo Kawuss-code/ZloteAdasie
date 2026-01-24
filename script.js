@@ -84,20 +84,12 @@ document.getElementById("voteForm").addEventListener("submit", async function(e)
     e.preventDefault();
     if (checkVoteBlock()) return;
 
-    const data = {
-        fullname: this.fullname.value,
-        best_vote: this.best_vote.value,
-        funny_vote: this.funny_vote.value,
-        message: this.message.value
-    };
+    const formData = new FormData(this); // THIS = formularz
 
     try {
         const res = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec", {
             method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json"
-            }
+            body: formData
         });
 
         if (res.ok) {
@@ -113,3 +105,4 @@ document.getElementById("voteForm").addEventListener("submit", async function(e)
         console.error(err);
     }
 });
+
