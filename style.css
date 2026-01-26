@@ -9,9 +9,12 @@ body {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
     color: #d4af37;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
+    width: 100%;
     background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     text-align: center;
@@ -52,8 +55,11 @@ nav button:hover {
 
 main {
     max-width: 1000px;
-    margin: 40px auto;
-    padding: 20px;
+    height: 100%;
+    flex: 1;
+    background: linear-gradient(to bottom, #000000 0%, #1e1e1e 100%);
+    /* margin: 40px auto;
+    padding: 20px; */
 }
 
 .tab-content {
@@ -70,6 +76,21 @@ main {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* home */
+
+#home {
+    height: 100%;
+}
+
+.main-img {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #d4af37;
+    border-top: 0px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
 h2 {
     text-align: center;
     font-size: 2em;
@@ -80,9 +101,10 @@ h2 {
 .info-box {
     background: rgba(212, 175, 55, 0.1);
     border: 2px solid #d4af37;
+    margin: 60px;
+    margin-top: 56px;
     padding: 20px;
     border-radius: 10px;
-    margin-top: 30px;
     text-align: center;
 }
 
@@ -92,13 +114,15 @@ h2 {
 }
 
 .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
     margin-top: 20px;
 }
 
 .category-grid button {
+    min-width: 200px;
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid #d4af37;
     color: #d4af37;
@@ -115,8 +139,15 @@ h2 {
     transform: scale(1.05);
 }
 
+#nominees {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .nominee-display {
     text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
 }
 
 .nominee-display h3 {
@@ -125,13 +156,13 @@ h2 {
     text-transform: capitalize;
 }
 
-#nominees {
+#nominees-spec {
     list-style: none;
     max-width: 500px;
     margin: 20px auto;
 }
 
-#nominees li {
+#nominees-spec li {
     background: rgba(212, 175, 55, 0.1);
     border: 1px solid #d4af37;
     padding: 15px;
@@ -140,7 +171,7 @@ h2 {
     transition: all 0.3s ease;
 }
 
-#nominees li:hover {
+#nominees-spec li:hover {
     background: rgba(212, 175, 55, 0.2);
     transform: translateX(5px);
 }
@@ -167,6 +198,10 @@ button:hover {
     margin-top: 20px;
 }
 
+#vote {
+    margin: 20px;
+}
+
 #vote-start {
     text-align: center;
 }
@@ -190,8 +225,7 @@ button:hover {
     font-size: 1.5em;
 }
 
-.vote-step input,
-.vote-step select {
+.vote-step input {
     width: 100%;
     max-width: 400px;
     padding: 12px;
@@ -203,9 +237,35 @@ button:hover {
     margin-bottom: 15px;
 }
 
-.vote-step select option {
-    background: #0a0a0a;
+.nominee-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.nominee-btn {
+    padding: 15px;
+    font-size: 16px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #d4af37;
     color: #d4af37;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nominee-btn:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: scale(1.05);
+}
+
+.nominee-btn.selected {
+    background: #d4af37;
+    color: #0a0a0a;
+    font-weight: bold;
 }
 
 .message-box {
@@ -233,11 +293,21 @@ button:hover {
 }
 
 footer {
+    width: 100%;
     text-align: center;
     padding: 20px;
     border-top: 2px solid #d4af37;
-    margin-top: 60px;
     opacity: 0.7;
+    background-color: #1e1e1e;
+}
+
+.progress-info {
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+#back-to-categories {
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {
@@ -251,5 +321,9 @@ footer {
     
     nav {
         flex-direction: column;
+    }
+    
+    .nominee-buttons {
+        grid-template-columns: 1fr;
     }
 }

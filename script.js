@@ -1,7 +1,3 @@
-// ======================
-// DANE APLIKACJI
-// ======================
-
 const NOMINEES = {
     nauczyciel: ["Pani Kowalska", "Pan Nowak", "Pani Wiśniewska"],
     wycieczka: ["Wycieczka do zoo", "Wycieczka do kina", "Wycieczka w góry"],
@@ -56,15 +52,10 @@ const CATEGORY_NAMES = {
     inteligent: "Inteligent"
 };
 
-const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec";
-
 let currentVoteStep = 0;
 let voteData = {};
 
-// ======================
 // INICJALIZACJA
-// ======================
-
 document.addEventListener('DOMContentLoaded', function() {
     initNavigation();
     initNominees();
@@ -72,43 +63,32 @@ document.addEventListener('DOMContentLoaded', function() {
     checkIfAlreadyVoted();
 });
 
-// ======================
-// NAWIGACJA (ZAKŁADKI)
-// ======================
-
+// NAWIGACJA
 function initNavigation() {
     const navButtons = document.querySelectorAll('nav button[data-tab]');
-    
     navButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
-            switchTab(tabName);
+            switchTab(this.getAttribute('data-tab'));
         });
     });
 }
 
 function switchTab(tabName) {
-    // Ukryj wszystkie zakładki
     document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
     });
     
-    // Pokaż wybraną zakładkę
     const targetTab = document.getElementById(tabName);
     if (targetTab) {
         targetTab.classList.add('active');
     }
     
-    // Sprawdź stan głosowania
     if (tabName === 'vote') {
         checkIfAlreadyVoted();
     }
 }
 
-// ======================
 // NOMINOWANI
-// ======================
-
 function initNominees() {
     const container = document.getElementById('category-buttons');
     if (!container) return;
@@ -122,18 +102,23 @@ function initNominees() {
         container.appendChild(button);
     });
     
-    // Przycisk "Wróć"
-    const backBtn = document.getElementById('back-to-categories');
-    if (backBtn) {
-        backBtn.addEventListener('click', backToCategories);
-    }
+    // Inicjalizuj przycisk "Wróć" z event listenerem
+    setTimeout(() => {
+        const backBtn = document.getElementById('back-to-categories');
+        if (backBtn) {
+            backBtn.onclick = function(e) {
+                e.preventDefault();
+                backToCategories();
+            };
+        }
+    }, 100);
 }
 
 function showNominees(category) {
     const buttonsContainer = document.getElementById('category-buttons');
     const listContainer = document.getElementById('nominee-list');
     const title = document.getElementById('category-title');
-    const list = document.getElementById('nominees');
+    const list = document.getElementById('nominees-spec');
     
     if (!buttonsContainer || !listContainer || !title || !list) return;
     
@@ -148,20 +133,31 @@ function showNominees(category) {
         li.textContent = nominee;
         list.appendChild(li);
     });
+
+    const but = document.createElement('button');
+    but.id = "back-to-categories";
+    but.textContent = "⬅️ Wróć do kategorii";
+    list.appendChild(but);
+    
+    // Upewnij się, że przycisk "Wróć" ma event listener
+    const backBtn = document.getElementById('back-to-categories');
+    if (backBtn) {
+        backBtn.onclick = function(e) {
+            e.preventDefault();
+            backToCategories();
+        };
+    }
 }
 
 function backToCategories() {
     const buttonsContainer = document.getElementById('category-buttons');
     const listContainer = document.getElementById('nominee-list');
     
-    if (buttonsContainer) buttonsContainer.style.display = 'grid';
+    if (buttonsContainer) buttonsContainer.style.display = '';
     if (listContainer) listContainer.style.display = 'none';
 }
 
-// ======================
 // GŁOSOWANIE
-// ======================
-
 function initVoting() {
     const startBtn = document.getElementById('start-voting-btn');
     if (startBtn) {
@@ -170,12 +166,13 @@ function initVoting() {
 }
 
 function checkIfAlreadyVoted() {
+    const hasVoted = sessionStorage.getItem('zlote_adasie_voted');
     const voteStart = document.getElementById('vote-start');
     const voteForm = document.getElementById('vote-form');
     const voteBlocked = document.getElementById('vote-blocked');
     const voteSuccess = document.getElementById('vote-success');
     
-    if (localStorage.getItem('zlote_adasie_voted')) {
+    if (hasVoted) {
         if (voteStart) voteStart.style.display = 'none';
         if (voteForm) voteForm.style.display = 'none';
         if (voteBlocked) voteBlocked.style.display = 'block';
@@ -189,7 +186,7 @@ function checkIfAlreadyVoted() {
 }
 
 function startVote() {
-    if (localStorage.getItem('zlote_adasie_voted')) {
+    if (sessionStorage.getItem('zlote_adasie_voted')) {
         alert('Już oddałeś głos!');
         return;
     }
@@ -211,7 +208,6 @@ function showVoteStep() {
     if (!container) return;
     
     container.innerHTML = '';
-    
     const categories = Object.keys(NOMINEES);
     
     // Krok 0: Imię i nazwisko
@@ -226,7 +222,6 @@ function showVoteStep() {
         `;
         container.appendChild(stepDiv);
         
-        // Event listener dla przycisku
         const nextBtn = document.getElementById('next-step-0');
         if (nextBtn) {
             nextBtn.addEventListener('click', nextVoteStep);
@@ -245,18 +240,24 @@ function showVoteStep() {
         const progress = `Krok ${currentVoteStep} z ${categories.length}`;
         
         stepDiv.innerHTML = `
-            <p style="opacity:0.7;">${progress}</p>
+            <p class="progress-info">${progress}</p>
             <h3>${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}</h3>
-            <select id="vote-select-${category}" required>
-                <option value="">-- Wybierz --</option>
-                ${NOMINEES[category].map(n => `<option value="${n}">${n}</option>`).join('')}
-            </select>
+            <div class="nominee-buttons" id="nominee-buttons-${category}"></div>
             <br>
-            <button type="button" id="next-step-${currentVoteStep}">Dalej ➡️</button>
+            <button type="button" id="next-step-${currentVoteStep}" disabled>Dalej ➡️</button>
         `;
         container.appendChild(stepDiv);
         
-        // Event listener dla przycisku
+        // Dodaj przyciski z kandydatami
+        const buttonsContainer = document.getElementById(`nominee-buttons-${category}`);
+        NOMINEES[category].forEach(nominee => {
+            const btn = document.createElement('button');
+            btn.className = 'nominee-btn';
+            btn.textContent = nominee;
+            btn.onclick = () => selectNominee(category, nominee, btn);
+            buttonsContainer.appendChild(btn);
+        });
+        
         const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
         if (nextBtn) {
             nextBtn.addEventListener('click', nextVoteStep);
@@ -277,11 +278,30 @@ function showVoteStep() {
         `;
         container.appendChild(stepDiv);
         
-        // Event listener dla przycisku wyślij
         const submitBtn = document.getElementById('submit-vote-btn');
         if (submitBtn) {
             submitBtn.addEventListener('click', submitVote);
         }
+    }
+}
+
+function selectNominee(category, nominee, buttonElement) {
+    // Usuń zaznaczenie z innych przycisków
+    const allButtons = buttonElement.parentElement.querySelectorAll('.nominee-btn');
+    allButtons.forEach(btn => btn.classList.remove('selected'));
+    
+    // Zaznacz wybrany przycisk
+    buttonElement.classList.add('selected');
+    
+    // Zapisz wybór
+    voteData[category] = nominee;
+    console.log('Zapisano:', category, '=', nominee);
+    console.log('Wszystkie dane:', voteData);
+    
+    // Odblokuj przycisk "Dalej"
+    const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
+    if (nextBtn) {
+        nextBtn.disabled = false;
     }
 }
 
@@ -305,14 +325,11 @@ function nextVoteStep() {
     if (currentVoteStep > 0 && currentVoteStep <= categories.length) {
         const categoryIndex = currentVoteStep - 1;
         const category = categories[categoryIndex];
-        const select = document.getElementById(`vote-select-${category}`);
         
-        if (!select || !select.value) {
+        if (!voteData[category]) {
             alert('Wybierz opcję przed przejściem dalej!');
             return;
         }
-        
-        voteData[category] = select.value;
     }
     
     currentVoteStep++;
@@ -320,35 +337,56 @@ function nextVoteStep() {
 }
 
 async function submitVote() {
-    if (localStorage.getItem('zlote_adasie_voted')) {
+    if (sessionStorage.getItem('zlote_adasie_voted')) {
         alert('Już oddałeś głos!');
         return;
     }
     
     try {
-        // Przygotuj dane do wysłania
+        console.log('Wysyłane dane:', voteData);
+        
         const formData = new FormData();
-        Object.keys(voteData).forEach(key => {
-            formData.append(key, voteData[key]);
-        });
+        formData.append('fullname', voteData.fullname || '');
+        formData.append('nauczyciel', voteData.nauczyciel || '');
+        formData.append('wycieczka', voteData.wycieczka || '');
+        formData.append('przypal', voteData.przypal || '');
+        formData.append('przewodniczacy', voteData.przewodniczacy || '');
+        formData.append('nieobecnosci', voteData.nieobecnosci || '');
+        formData.append('duo', voteData.duo || '');
+        formData.append('glow_up', voteData.glow_up || '');
+        formData.append('wypowiedz', voteData.wypowiedz || '');
+        formData.append('osiagniecia', voteData.osiagniecia || '');
+        formData.append('sciagajacy', voteData.sciagajacy || '');
+        formData.append('osobowosc', voteData.osobowosc || '');
+        formData.append('aura', voteData.aura || '');
+        formData.append('parkowanie', voteData.parkowanie || '');
+        formData.append('sportowiec', voteData.sportowiec || '');
+        formData.append('inteligent', voteData.inteligent || '');
         
-        // Wyślij do Google Sheets
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwxYO2egn93Q4zcbczjwfCd-vLI_rOSl84ugHJG8_YLJwKUC8NickjJC-EvyeYS5eUT/exec", {
+        console.log('Wysyłam request...');
+        
+        fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
             method: 'POST',
+            mode: 'no-cors',
             body: formData
+        }).then(() => {
+            console.log('Request zakończony (no-cors mode)');
+        }).catch(err => {
+            console.log('Błąd fetch:', err);
         });
         
-        if (response.ok) {
-            localStorage.setItem('zlote_adasie_voted', 'true');
-            
-            const voteForm = document.getElementById('vote-form');
-            const voteSuccess = document.getElementById('vote-success');
-            
-            if (voteForm) voteForm.style.display = 'none';
-            if (voteSuccess) voteSuccess.style.display = 'block';
-        } else {
-            alert('Wystąpił błąd podczas wysyłania głosu. Spróbuj ponownie.');
-        }
+        // Czekamy 2 sekundy na wysłanie
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        console.log('Oznaczam jako wysłane');
+        sessionStorage.setItem('zlote_adasie_voted', 'true');
+        
+        const voteForm = document.getElementById('vote-form');
+        const voteSuccess = document.getElementById('vote-success');
+        
+        if (voteForm) voteForm.style.display = 'none';
+        if (voteSuccess) voteSuccess.style.display = 'block';
+        
     } catch (error) {
         console.error('Błąd:', error);
         alert('Nie udało się wysłać głosu. Sprawdź połączenie z internetem.');
