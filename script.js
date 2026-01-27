@@ -82,7 +82,17 @@ function switchTab(tabName) {
     if (targetTab) {
         targetTab.classList.add('active');
     }
-    
+
+    if (tabName != "home") {
+        document.getElementById("info-box").classList.remove('show-info');
+        document.getElementById("info-box").classList.add('hide-info');
+    }
+
+    if (tabName == "home") {
+        document.getElementById("info-box").classList.remove('hide-info');
+        document.getElementById("info-box").classList.add('show-info');
+    }
+        
     if (tabName === 'vote') {
         checkIfAlreadyVoted();
     }

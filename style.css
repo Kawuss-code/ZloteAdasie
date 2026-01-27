@@ -54,7 +54,7 @@ nav button:hover {
 }
 
 main {
-    max-width: 1000px;
+    width: 100%;
     height: 100%;
     flex: 1;
     background: linear-gradient(to bottom, #000000 0%, #1e1e1e 100%);
@@ -80,9 +80,13 @@ main {
 
 #home {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .main-img {
+    max-width: 1000px;
     width: 100%;
     height: 100%;
     border: 2px solid #d4af37;
@@ -99,6 +103,7 @@ h2 {
 }
 
 .info-box {
+    max-width: 1000px;
     background: rgba(212, 175, 55, 0.1);
     border: 2px solid #d4af37;
     margin: 60px;
@@ -106,11 +111,21 @@ h2 {
     padding: 20px;
     border-radius: 10px;
     text-align: center;
+
+    animation: fadeIn 0.5s;
 }
 
 .info-box p {
     margin: 10px 0;
     font-size: 1.1em;
+}
+
+.hide-info {
+    display: none;
+}
+
+.show-info {
+    display: block;
 }
 
 .category-grid {
@@ -140,8 +155,8 @@ h2 {
 }
 
 #nominees {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .nominee-display {
@@ -200,6 +215,8 @@ button:hover {
 
 #vote {
     margin: 20px;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 #vote-start {
