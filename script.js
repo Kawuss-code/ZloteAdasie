@@ -1,21 +1,82 @@
 let voteIsBeingSent = false;
 
 const NOMINEES = {
-    nauczyciel: ["Pani Kowalska", "Pan Nowak", "Pani Wiśniewska"],
-    wycieczka: ["Wycieczka do zoo", "Wycieczka do kina", "Wycieczka w góry"],
-    przypal: ["Janek", "Kasia", "Marek"],
-    przewodniczacy: ["Anna", "Tomek", "Piotr"],
-    nieobecnosci: ["Ola", "Kacper", "Bartek"],
-    duo: ["Marta & Ania", "Jan & Tomek", "Kasia & Ola"],
-    glow_up: ["Monika", "Paweł", "Natalia"],
-    wypowiedz: ["Adam", "Klaudia", "Łukasz"],
-    osiagniecia: ["Asia", "Marcin", "Ewa"],
-    sciagajacy: ["Filip", "Daria", "Michał"],
-    osobowosc: ["Karolina", "Damian", "Patryk"],
-    aura: ["Laura", "Kamil", "Natalia"],
-    parkowanie: ["Piotr", "Szymon", "Mateusz"],
-    sportowiec: ["Oliwia", "Robert", "Julia"],
-    inteligent: ["Michał", "Anna", "Kacper"]
+    nauczyciel: [
+        "Monika Twardowska Święs",
+        "Tomasz Bulzak",
+        "Aleksander Jarmoliński",
+        "Beata Borkowska"
+    ],
+
+    wycieczka: [
+        "Obóz biologiczny",
+        "Praga",
+        "Chorwacja",
+        "Zwierzyniec"
+    ],
+
+    przypal: [
+        "Alkomat w Zwierzyńcu",
+        "Kibel szkolny"
+    ],
+
+    przewodniczacy: [
+        "Kasia Bulzak",
+        "Oliwia Śliwa",
+        "Janek Gurgul",
+        "Kamil Szczapa"
+    ],
+
+    nieobecnosci: [
+        "Anna Leszko",
+        "Wiktor Szabla",
+        "Nicola Hojnor",
+        "Kamil Szczapa"
+    ],
+
+    duo: [
+        "Wiktor Pater i Wiktor Szabla",
+        "Oliwia Śliwa i Kasia Bulzak",
+        "Karol Jasirkowski"
+    ],
+
+    glow_up: [
+        "Wiktor Pater",
+        "Matylda Marańska"
+    ],
+
+    wypowiedz: [
+        "Wiktor Pater"
+    ],
+
+    osiagniecia: [
+        "Weronika Kowalczyk"
+    ],
+
+    sciagajacy: [
+        "Oliwia Śliwa",
+        "Gosia Gryzło"
+    ],
+
+    osobowosc: [
+        "Kasia Bulzak",
+        "Weronika Kowalczyk"
+    ],
+
+    styl: [
+        "Gosia Gryzło",
+        "Matylda Marańska"
+    ],
+
+    kierowca: [
+        "Wiktoria Pietryga",
+        "Daria Parużnik"
+    ],
+
+    sportowiec: [
+        "Amelka Pakosińska",
+        "Oliwia Śliwa"
+    ]
 };
 
 const CATEGORY_ICONS = {
@@ -25,34 +86,51 @@ const CATEGORY_ICONS = {
     przewodniczacy: "👑",
     nieobecnosci: "🚫",
     duo: "👯",
-    glow_up: "💄",
+    glow_up: "✨",
     wypowiedz: "🗣️",
     osiagniecia: "🏆",
     sciagajacy: "📄",
     osobowosc: "😎",
-    aura: "✨",
-    parkowanie: "🅿️",
-    sportowiec: "🏅",
-    inteligent: "🧠"
+    styl: "👗",
+    kierowca: "🚗",
+    sportowiec: "🏅"
 };
 
+
 const CATEGORY_NAMES = {
-    nauczyciel: "Nauczyciel",
-    wycieczka: "Wycieczka",
-    przypal: "Przypał",
-    przewodniczacy: "Przewodniczący",
-    nieobecnosci: "Nieobecności",
-    duo: "Duo",
-    glow_up: "Glow Up",
-    wypowiedz: "Wypowiedź",
-    osiagniecia: "Osiągnięcia",
-    sciagajacy: "Ściągający",
-    osobowosc: "Osobowość",
-    aura: "Aura",
-    parkowanie: "Parkowanie",
-    sportowiec: "Sportowiec",
-    inteligent: "Inteligent"
+    nauczyciel: "Ulubiony nauczyciel",
+    wycieczka: "Najlepsza wycieczka",
+    przypal: "Najmocniejszy przypał",
+    przewodniczacy: "Najlepszy przewodniczący",
+    nieobecnosci: "Najwięcej nieobecności",
+    duo: "Najlepsze duo",
+    glow_up: "Największy glow up",
+    wypowiedz: "Najlepsza wypowiedź",
+    osiagniecia: "Największe osiągnięcia",
+    sciagajacy: "Najlepszy ściągający",
+    osobowosc: "Najlepsza osobowość",
+    styl: "Najlepszy styl",
+    kierowca: "Najlepszy kierowca",
+    sportowiec: "Najlepszy sportowiec"
 };
+
+const VOTE_CATEGORIES = [
+  'nauczyciel',
+  'wycieczka',
+  'przypal',
+  'przewodniczacy',
+  'nieobecnosci',
+  'duo',
+  'glow_up',
+  'wypowiedz',
+  'osiagniecia',
+  'sciagajacy',
+  'osobowosc',
+  'styl',
+  'kierowca',
+  'sportowiec'
+];
+
 
 let currentVoteStep = 0;
 let voteData = {};
@@ -221,82 +299,65 @@ function showVoteStep() {
     if (!container) return;
     
     container.innerHTML = '';
-    const categories = Object.keys(NOMINEES);
-    
+
     // Krok 0: Imię i nazwisko
     if (currentVoteStep === 0) {
-        const stepDiv = document.createElement('div');
-        stepDiv.className = 'vote-step';
-        stepDiv.innerHTML = `
-            <h3>Podaj swoje imię i nazwisko</h3>
-            <input type="text" id="fullname-input" placeholder="Imię i nazwisko" required>
-            <br>
-            <button type="button" id="next-step-0">Dalej ➡️</button>
+        container.innerHTML = `
+            <div class="vote-step">
+                <h3>Podaj swoje imię i nazwisko</h3>
+                <input type="text" id="fullname-input" placeholder="Imię i nazwisko" required>
+                <br>
+                <button type="button" id="next-step-0">Dalej ➡️</button>
+            </div>
         `;
-        container.appendChild(stepDiv);
-        
-        const nextBtn = document.getElementById('next-step-0');
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextVoteStep);
-        }
+        document.getElementById('next-step-0').addEventListener('click', nextVoteStep);
         return;
     }
-    
-    // Kroki 1-15: Kategorie
-    if (currentVoteStep <= categories.length) {
-        const categoryIndex = currentVoteStep - 1;
-        const category = categories[categoryIndex];
-        
-        const stepDiv = document.createElement('div');
-        stepDiv.className = 'vote-step';
-        
-        const progress = `Krok ${currentVoteStep} z ${categories.length}`;
-        
-        stepDiv.innerHTML = `
-            <p class="progress-info">${progress}</p>
-            <h3>${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}</h3>
-            <div class="nominee-buttons" id="nominee-buttons-${category}"></div>
-            <br>
-            <button type="button" id="next-step-${currentVoteStep}" disabled>Dalej ➡️</button>
+
+    // Kategoria głosowania
+    const categoryIndex = currentVoteStep - 1;
+    if (categoryIndex < VOTE_CATEGORIES.length) {
+        const category = VOTE_CATEGORIES[categoryIndex];
+        const nominees = NOMINEES[category];
+
+        container.innerHTML = `
+            <div class="vote-step">
+                <p class="progress-info">Krok ${currentVoteStep} z ${VOTE_CATEGORIES.length}</p>
+                <h3>${CATEGORY_ICONS[category]} ${CATEGORY_NAMES[category]}</h3>
+                <div class="nominee-buttons" id="nominee-buttons-${category}"></div>
+                <br>
+                <button type="button" id="next-step-${currentVoteStep}" disabled>Dalej ➡️</button>
+            </div>
         `;
-        container.appendChild(stepDiv);
-        
-        // Dodaj przyciski z kandydatami
+
         const buttonsContainer = document.getElementById(`nominee-buttons-${category}`);
-        NOMINEES[category].forEach(nominee => {
+        nominees.forEach(nominee => {
             const btn = document.createElement('button');
             btn.className = 'nominee-btn';
             btn.textContent = nominee;
             btn.onclick = () => selectNominee(category, nominee, btn);
             buttonsContainer.appendChild(btn);
         });
-        
-        const nextBtn = document.getElementById(`next-step-${currentVoteStep}`);
-        if (nextBtn) {
-            nextBtn.addEventListener('click', nextVoteStep);
-        }
+
+        document.getElementById(`next-step-${currentVoteStep}`).addEventListener('click', nextVoteStep);
         return;
     }
-    
+
     // Ostatni krok: Wyślij
-    if (currentVoteStep > categories.length) {
-        const stepDiv = document.createElement('div');
-        stepDiv.className = 'vote-step';
-        stepDiv.innerHTML = `
-            <h3>✅ Gotowe!</h3>
-            <p>Sprawdź swoje odpowiedzi i wyślij głos.</p>
-            <button type="button" id="submit-vote-btn" style="background:#4CAF50; border-color:#4CAF50;">
-                Wyślij głos 🗳️
-            </button>
+    if (categoryIndex >= VOTE_CATEGORIES.length) {
+        container.innerHTML = `
+            <div class="vote-step">
+                <h3>✅ Gotowe!</h3>
+                <p>Sprawdź swoje odpowiedzi i wyślij głos.</p>
+                <button type="button" id="submit-vote-btn" style="background:#4CAF50; border-color:#4CAF50;">
+                    Wyślij głos 🗳️
+                </button>
+            </div>
         `;
-        container.appendChild(stepDiv);
-        
-        const submitBtn = document.getElementById('submit-vote-btn');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', submitVote);
-        }
+        document.getElementById('submit-vote-btn').addEventListener('click', submitVote);
     }
 }
+
 
 function selectNominee(category, nominee, buttonElement) {
     // Usuń zaznaczenie z innych przycisków
@@ -319,13 +380,11 @@ function selectNominee(category, nominee, buttonElement) {
 }
 
 function nextVoteStep() {
-    const categories = Object.keys(NOMINEES);
-    
-    // Walidacja kroku 0 (imię i nazwisko)
+    // Krok 0: zapis imienia i nazwiska
     if (currentVoteStep === 0) {
         const fullnameInput = document.getElementById('fullname-input');
         if (!fullnameInput) return;
-        
+
         const fullname = fullnameInput.value.trim();
         if (!fullname) {
             alert('Podaj imię i nazwisko!');
@@ -333,21 +392,21 @@ function nextVoteStep() {
         }
         voteData.fullname = fullname;
     }
-    
-    // Walidacja kroków kategorii
-    if (currentVoteStep > 0 && currentVoteStep <= categories.length) {
-        const categoryIndex = currentVoteStep - 1;
-        const category = categories[categoryIndex];
-        
+
+    // Kategorie
+    const categoryIndex = currentVoteStep - 1;
+    if (categoryIndex >= 0 && categoryIndex < VOTE_CATEGORIES.length) {
+        const category = VOTE_CATEGORIES[categoryIndex];
         if (!voteData[category]) {
             alert('Wybierz opcję przed przejściem dalej!');
             return;
         }
     }
-    
+
     currentVoteStep++;
     showVoteStep();
 }
+
 
 async function submitVote() {
     // 🔒 Blokada przed wielokrotnym klikaniem
@@ -386,16 +445,19 @@ async function submitVote() {
         formData.append('osiagniecia', voteData.osiagniecia || '');
         formData.append('sciagajacy', voteData.sciagajacy || '');
         formData.append('osobowosc', voteData.osobowosc || '');
-        formData.append('aura', voteData.aura || '');
-        formData.append('parkowanie', voteData.parkowanie || '');
+        formData.append('styl', voteData.styl || '');
+        formData.append('kierowca', voteData.kierowca || '');
         formData.append('sportowiec', voteData.sportowiec || '');
-        formData.append('inteligent', voteData.inteligent || '');
+
+        console.log("STYL:", voteData.styl);
+        console.log("KIEROWCA:", voteData.kierowca);
+
 
         console.log('Wysyłam request...');
 
-        await fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
+        await fetch("https://script.google.com/macros/s/AKfycbyjNK7EzBL4-5YgS9U9AjoBLxasz4URCKPgso7sD8vD5cHG7eSICA2y9PGxpf5W8CR_/exec", {
             method: 'POST',
-            mode: 'no-cors',
+            // mode: 'no-cors',
             body: formData
         });
 
@@ -409,6 +471,8 @@ async function submitVote() {
 
         if (voteForm) voteForm.style.display = 'none';
         if (voteSuccess) voteSuccess.style.display = 'block';
+
+        showVoteSummary();
 
         if (submitBtn) {
             submitBtn.textContent = "✅ Głos wysłany!";
@@ -425,4 +489,34 @@ async function submitVote() {
             submitBtn.textContent = "Wyślij głos 🗳️";
         }
     }
+}
+
+function showVoteSummary() {
+    const summaryDiv = document.getElementById("vote-summary");
+    if (!summaryDiv) return;
+
+    let html = `
+        <h3>📄 Twoje odpowiedzi</h3>
+        <p><strong>Imię i nazwisko:</strong> ${voteData.fullname}</p>
+        <ul>
+    `;
+
+    const categories = Object.keys(NOMINEES);
+
+    categories.forEach(cat => {
+        html += `
+            <li>
+                <strong>${CATEGORY_ICONS[cat]} ${CATEGORY_NAMES[cat]}:</strong><br>
+                ${voteData[cat] || "-"}
+            </li>
+        `;
+    });
+
+    html += `
+        </ul>
+        <p style="margin-top:20px; opacity:0.7;">📸 Możesz zrobić screena tego potwierdzenia</p>
+    `;
+
+    summaryDiv.innerHTML = html;
+    summaryDiv.style.display = "block";
 }
