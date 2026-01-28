@@ -62,7 +62,7 @@ const NOMINEES = {
 
     wypowiedz: [
         "Pani Lorek do Kasi Dominik - \"Monika, dostałam twoje zwolnienie\" / \"Proszę pani ale ja jestem Kasia\" / \"ja widzę że jesteś w klasie\"",
-        "Wiktor Pater \"Prosze pani bo ja sie pawełków najadłem\"",
+        "Wiktor Pater - \"Prosze pani bo ja sie pawełków najadłem\"",
         "Aleksander Jarmoliński - \"Uciekaj mi stąd!\"",
         "Beata Bo*ska - \"Wy wszyscy macie autyzm\"",
         "Piotr Bugajski - \"P. Twardowska Piotrek odloz telefon .Piotrek nie moge rozmawiam z klientem\"",
