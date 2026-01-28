@@ -1,3 +1,5 @@
+let voteIsBeingSent = false;
+
 const NOMINEES = {
     nauczyciel: ["Pani Kowalska", "Pan Nowak", "Pani Wiśniewska"],
     wycieczka: ["Wycieczka do zoo", "Wycieczka do kina", "Wycieczka w góry"],
@@ -65,13 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // NAWIGACJA
 function initNavigation() {
-    const navButtons = document.querySelectorAll('nav button[data-tab]');
+    const navButtons = document.querySelectorAll('button[data-tab]');
     navButtons.forEach(button => {
         button.addEventListener('click', function() {
             switchTab(this.getAttribute('data-tab'));
         });
     });
 }
+
 
 function switchTab(tabName) {
     document.querySelectorAll('.tab-content').forEach(tab => {
@@ -347,14 +350,29 @@ function nextVoteStep() {
 }
 
 async function submitVote() {
+    // 🔒 Blokada przed wielokrotnym klikaniem
+    if (voteIsBeingSent) {
+        console.log("Już wysyłasz głos — ignoruję klik");
+        return;
+    }
+
     if (sessionStorage.getItem('zlote_adasie_voted')) {
         alert('Już oddałeś głos!');
         return;
     }
-    
+
+    voteIsBeingSent = true; // 🔒 BLOKADA LOGICZNA
+
+    const submitBtn = document.getElementById("submit-vote-btn");
+    if (submitBtn) {
+        submitBtn.disabled = true;           // 🔒 BLOKADA FIZYCZNA
+        submitBtn.textContent = "⏳ Wysyłanie...";
+        submitBtn.style.opacity = "0.6";
+    }
+
     try {
         console.log('Wysyłane dane:', voteData);
-        
+
         const formData = new FormData();
         formData.append('fullname', voteData.fullname || '');
         formData.append('nauczyciel', voteData.nauczyciel || '');
@@ -372,33 +390,39 @@ async function submitVote() {
         formData.append('parkowanie', voteData.parkowanie || '');
         formData.append('sportowiec', voteData.sportowiec || '');
         formData.append('inteligent', voteData.inteligent || '');
-        
+
         console.log('Wysyłam request...');
-        
-        fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
+
+        await fetch("https://script.google.com/macros/s/AKfycbzD4enAz0jz9KMDiznBnO0ucAmkFOPbeh0Sr-kyRcVG_qOs7i6T4UtX_qfmBl9nV_ew/exec", {
             method: 'POST',
             mode: 'no-cors',
             body: formData
-        }).then(() => {
-            console.log('Request zakończony (no-cors mode)');
-        }).catch(err => {
-            console.log('Błąd fetch:', err);
         });
-        
-        // Czekamy 2 sekundy na wysłanie
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        console.log('Oznaczam jako wysłane');
+
+        console.log('Request wysłany');
+
+        // Zapis że już zagłosował
         sessionStorage.setItem('zlote_adasie_voted', 'true');
-        
+
         const voteForm = document.getElementById('vote-form');
         const voteSuccess = document.getElementById('vote-success');
-        
+
         if (voteForm) voteForm.style.display = 'none';
         if (voteSuccess) voteSuccess.style.display = 'block';
-        
+
+        if (submitBtn) {
+            submitBtn.textContent = "✅ Głos wysłany!";
+        }
+
     } catch (error) {
         console.error('Błąd:', error);
         alert('Nie udało się wysłać głosu. Sprawdź połączenie z internetem.');
+
+        // ❗ W razie błędu można odblokować
+        voteIsBeingSent = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Wyślij głos 🗳️";
+        }
     }
 }

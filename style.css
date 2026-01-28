@@ -58,6 +58,10 @@ main {
     height: 100%;
     flex: 1;
     background: linear-gradient(to bottom, #000000 0%, #1e1e1e 100%);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     /* margin: 40px auto;
     padding: 20px; */
 }
@@ -103,10 +107,10 @@ h2 {
 }
 
 .info-box {
-    max-width: 1000px;
+    max-width: 600px;
     background: rgba(212, 175, 55, 0.1);
     border: 2px solid #d4af37;
-    margin: 60px;
+    margin: 40px;
     margin-top: 56px;
     padding: 20px;
     border-radius: 10px;
@@ -118,6 +122,10 @@ h2 {
 .info-box p {
     margin: 10px 0;
     font-size: 1.1em;
+}
+
+.go-to-vote {
+    margin: 15px;
 }
 
 .hide-info {
@@ -155,6 +163,7 @@ h2 {
 }
 
 #nominees {
+    max-width: 1000px;
     margin-top: 30px;
     margin-bottom: 30px;
 }
@@ -229,6 +238,7 @@ button:hover {
 }
 
 .vote-step {
+    min-width: 600px;
     background: rgba(212, 175, 55, 0.05);
     border: 2px solid #d4af37;
     padding: 30px;
@@ -342,5 +352,9 @@ footer {
     
     .nominee-buttons {
         grid-template-columns: 1fr;
+    }
+
+    .vote-step {
+        min-width: 100%;
     }
 }
