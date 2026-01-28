@@ -334,6 +334,10 @@ footer {
     background-color: #1e1e1e;
 }
 
+footer a {
+    color: #d4af37;
+}
+
 .progress-info {
     opacity: 0.7;
     margin-bottom: 10px;

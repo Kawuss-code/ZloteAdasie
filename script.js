@@ -5,79 +5,139 @@ const NOMINEES = {
         "Monika Twardowska Święs",
         "Tomasz Bulzak",
         "Aleksander Jarmoliński",
-        "Beata Borkowska"
+        "Beata Borkowska",
+        "Ewa Młynarczyk",
+        "Anna Gaborek"
     ],
 
     wycieczka: [
         "Obóz biologiczny",
         "Praga",
         "Chorwacja",
-        "Zwierzyniec"
+        "Zwierzyniec",
+        "Wiedeń"
     ],
 
     przypal: [
         "Alkomat w Zwierzyńcu",
-        "Kibel szkolny"
+        "Ucieczka przed Panem Profesorem w toalecie",
+        "Rozwalony kibel"
     ],
 
     przewodniczacy: [
         "Kasia Bulzak",
         "Oliwia Śliwa",
         "Janek Gurgul",
-        "Kamil Szczapa"
+        "Kamil Szczapa",
+        "Jagoda Talar",
+        "Gabrysia Leśniak"
     ],
 
     nieobecnosci: [
         "Anna Leszko",
         "Wiktor Szabla",
         "Nicola Hojnor",
-        "Kamil Szczapa"
+        "Kamil Szczapa",
+        "Piotr Bugajski",
+        "Julka Kroczek"
     ],
 
     duo: [
         "Wiktor Pater i Wiktor Szabla",
         "Oliwia Śliwa i Kasia Bulzak",
-        "Karol Jasirkowski"
+        "Karol Jasirkowski i Cyprian Bieda",
+        "Ignacy Grzegorzek i Błażej Dyrek",
+        "Gabrys i Marcel Leśniak",
+        "Kroczek i Halota"
     ],
 
     glow_up: [
         "Wiktor Pater",
-        "Matylda Marańska"
+        "Matylda Marańska",
+        "Cyprian Bieda",
+        "Zosia Dyrek",
+        "Alicja Kościsz",
+        "Maciek Tabak"
     ],
 
     wypowiedz: [
-        "Wiktor Pater"
+        "Wiktor Pater - \"Czy jak wypiję to z tej probowki to dostane 6?\"",
+        "Aleksander Jarmoliński - \"Uciekaj mi stąd!\"",
+        "Beata Bo*ska - \"Wy wszyscy macie autyzm\"",
+        "Piotr Bugajski - \"P.Twardowska Piotrek odloz telefon .Piotrek nie moge rozmawiam z klientem\"",
+        "Maciek Tabak - \"a do szescianu to a^6\""
     ],
 
     osiagniecia: [
-        "Weronika Kowalczyk"
+        "Weronika Kowalczyk",
+        "Dawid Kośinski",
+        "Zosia Dyrek",
+        "Tosia Wąchala",
+        "Marcel i Gabrys Leśniak"
     ],
 
     sciagajacy: [
         "Oliwia Śliwa",
-        "Gosia Gryzło"
+        "Janek Gurgul",
+        "Gosia Gryzło",
+        "Bartek Olech",
+        "Jagoda Talar",
+        "Patryk Homoncik"
     ],
 
     osobowosc: [
         "Kasia Bulzak",
-        "Weronika Kowalczyk"
+        "Weronika Kowalczyk",
+        "Adam Szyszka",
+        "Michał Litwinski",
+        "Alicja Kościsz",
+        "Kasia Mikołajczyk"
     ],
 
     styl: [
         "Gosia Gryzło",
-        "Matylda Marańska"
+        "Matylda Marańska",
+        "Szymon Respekta",
+        "Michał Litwinski",
+        "Asia Rusnarczyk",
+        "Madzia Wrobel"
     ],
 
     kierowca: [
         "Wiktoria Pietryga",
-        "Daria Parużnik"
+        "Daria Parużnik",
+        "Adam Szyszka",
+        "Michał Litwinski",
+        "Karolina Stanek",
+        "Jagoda Talar"
     ],
 
     sportowiec: [
         "Amelka Pakosińska",
-        "Oliwia Śliwa"
+        "Oliwia Śliwa",
+        "Olaf Piętka",
+        "Julka Gumulak",
+        "Marcel i Gabrys Leśniak"
     ]
 };
+
+const VOTE_CATEGORIES = [
+    'nauczyciel',
+    'wycieczka',
+    'przypal',
+    'przewodniczacy',
+    'nieobecnosci',
+    'duo',
+    'glow_up',
+    'wypowiedz',
+    'osiagniecia',
+    'sciagajacy',
+    'osobowosc',
+    'styl',
+    'kierowca',
+    'sportowiec'
+];
+
 
 const CATEGORY_ICONS = {
     nauczyciel: "🧑‍🏫",
@@ -113,23 +173,6 @@ const CATEGORY_NAMES = {
     kierowca: "Najlepszy kierowca",
     sportowiec: "Najlepszy sportowiec"
 };
-
-const VOTE_CATEGORIES = [
-  'nauczyciel',
-  'wycieczka',
-  'przypal',
-  'przewodniczacy',
-  'nieobecnosci',
-  'duo',
-  'glow_up',
-  'wypowiedz',
-  'osiagniecia',
-  'sciagajacy',
-  'osobowosc',
-  'styl',
-  'kierowca',
-  'sportowiec'
-];
 
 
 let currentVoteStep = 0;
